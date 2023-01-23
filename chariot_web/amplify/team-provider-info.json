@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-chariotweb-dev-125046-authRole",
+      "UnauthRoleArn": "arn:aws:iam::229543900898:role/amplify-chariotweb-dev-125046-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::229543900898:role/amplify-chariotweb-dev-125046-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-chariotweb-dev-125046-deployment",
+      "UnauthRoleName": "amplify-chariotweb-dev-125046-unauthRole",
+      "StackName": "amplify-chariotweb-dev-125046",
+      "StackId": "arn:aws:cloudformation:eu-west-2:229543900898:stack/amplify-chariotweb-dev-125046/8f0a9b60-9b1c-11ed-9984-061f16527fca",
+      "AmplifyAppId": "dx75rkpj8bn8c"
+    }
+  }
+}
