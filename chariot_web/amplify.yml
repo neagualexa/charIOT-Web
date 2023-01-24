@@ -1,0 +1,26 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - '#Execute Amplify CLI with helper script'
+        - amplifyPush --simple
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd chariot_web/
+        - echo "in chariot_web subfolder"
+        - ls
+        - npm install
+    build:
+      commands:
+        - echo "I am running app" 
+        - npm run build
+  artifacts:
+    baseDirectory: chariot_web/build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - chariot_web/node_modules/**/*
