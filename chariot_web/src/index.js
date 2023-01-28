@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import PublicApp from './PublicApp';
 import reportWebVitals from './reportWebVitals';
 
 import "@aws-amplify/ui-react/styles.css"; // Ensure React UI libraries are styled correctly
@@ -12,7 +12,7 @@ Amplify.configure(awsconfig) // Configures the Amplify libraries with the cloud 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <PublicApp />
   </React.StrictMode>
 );
 
