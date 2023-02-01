@@ -1,5 +1,5 @@
 // import "./styles.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,58 +10,45 @@ import {
   Legend
 } from "recharts";
 
-const data = [
+const data_test = [
   {
     name: "Page A",
     uv: 4000,
     pv: 2400,
     amt: 2400
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
   }
-];
+]
 
-export default function BarGraph() {
+// WINDOW DIMENSIONS
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
+
+export default function BarGraph({graphData}) {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+      // console.log(windowDimensions)
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  let graph_height = windowDimensions.height*0.5;   //300
+  let graph_width = windowDimensions.width*0.4;     //500
+
   return (
-    <div className="App" style={{alignContent:'center'}}>
       <BarChart
-        width={500}
-        height={300}
-        data={data}
+        width={graph_width}
+        height={graph_height}
+        data={graphData}
         margin={{
           top: 5,
           right: 30,
@@ -70,13 +57,17 @@ export default function BarGraph() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
+        <XAxis dataKey="name" stroke="white"/>
+        <YAxis stroke="white"/>
+        <Tooltip stroke="white"/>
         <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
+        <Bar dataKey="pv" fill={colours.red} />
+        <Bar dataKey="uv" fill={colours.gold} />
       </BarChart>
-    </div>
   );
+}
+
+const colours = {
+  red:"#db3d44",
+  gold:"#eac846"
 }

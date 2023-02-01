@@ -1,13 +1,13 @@
 import "@aws-amplify/ui-react/styles.css";
 import React from 'react';
-// import {
-//   withAuthenticator,
+import {
+  withAuthenticator,
 //   Button,
 //   Heading,
 //   Image,
 //   View,
 //   Card,
-// } from "@aws-amplify/ui-react";
+} from "@aws-amplify/ui-react";
 import '../App.css';
 
 // function NotFound({ signOut }) {
@@ -19,5 +19,4 @@ function NotFound() {
   );
 }
 
-// export default withAuthenticator(NotFound);
-export default NotFound;
+export default withAuthenticator(NotFound);

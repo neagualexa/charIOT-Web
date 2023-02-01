@@ -1,6 +1,9 @@
 .App {
   text-align: center;
-  color: #1e0303;
+  background-color: #1e0303;
+}
+
+.App-background {
   background-color: #1e0303;
 }
 
@@ -39,6 +42,12 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.Dashboard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 @keyframes App-logo-spin {
