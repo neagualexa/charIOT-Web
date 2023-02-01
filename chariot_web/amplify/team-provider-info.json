@@ -14,6 +14,9 @@
     "categories": {
       "auth": {
         "chariotwebb86a362f": {}
+      },
+      "api": {
+        "chariotweb": {}
       }
     }
   }

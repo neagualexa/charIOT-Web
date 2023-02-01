@@ -10,15 +10,6 @@ import {
   Legend
 } from "recharts";
 
-const data_test = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  }
-]
-
 // WINDOW DIMENSIONS
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -61,8 +52,8 @@ export default function BarGraph({graphData}) {
         <YAxis stroke="white"/>
         <Tooltip stroke="white"/>
         <Legend />
-        <Bar dataKey="pv" fill={colours.red} />
-        <Bar dataKey="uv" fill={colours.gold} />
+        <Bar dataKey="temperature" fill={colours.red} />
+        <Bar dataKey="humidity" fill={colours.gold} />
       </BarChart>
   );
 }

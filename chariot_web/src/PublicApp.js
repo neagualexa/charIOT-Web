@@ -9,7 +9,7 @@ import {
   // Card,
 } from "@aws-amplify/ui-react";
 
-import logo from './assets/gold-circle.png';
+// import logo from './assets/gold-circle.png';
 import './App.css';
 import Home from './screens/Home';
 import Dashboard from './screens/Dashboard';
@@ -25,27 +25,27 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 function PublicApp({ signOut }) {
 
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  // const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
-  useEffect(() => {
-    // console.log(window.location.pathname)
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-      // console.log(windowDimensions)
-    }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  },[])
+  // useEffect(() => {
+  //   // console.log(window.location.pathname)
+  //   function handleResize() {
+  //     setWindowDimensions(getWindowDimensions());
+  //     // console.log(windowDimensions)
+  //   }
+  //   window.addEventListener('resize', handleResize);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // },[])
 
-  let height = windowDimensions.height;   
-  let width = windowDimensions.width;     
+  // let height = windowDimensions.height;   
+  // let width = windowDimensions.width;     
   
 
   return (
     <div>
       <div className="App">
         <Router>
-          <SideBarMenu height={height} style={{position: "fixed"}} />
+          <SideBarMenu />
           <RoutesComponent />
         </Router>
       </div>
@@ -55,21 +55,21 @@ function PublicApp({ signOut }) {
   );
 }
 
-const RoutesComponent = ({height}) => {
+const RoutesComponent = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home  style={{height:{height}}}/>} />
-      <Route path="/home" element={<Home  style={{height:{height}}}/>} />
-      <Route path="/dashboard" element={<Dashboard  style={{height:{height}}}/>} />
-      <Route path="/*" element={<NotFound  style={{height:{height}}}/>} />
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 }
 
-const SideBarMenu = ({height}) => {
+const SideBarMenu = () => {
   return (
     <React.Fragment>
-      <SideNav style={{height:{height}}}>
+      <SideNav style={{position: "fixed", top:0, left:0, height:'100vh'}}>
         <SideNav.Toggle />
         <SideNav.Nav defaultSelected="home" >
           <MenuItem props={{ key: "home", title: "Home", icon: <TiHomeOutline style={{ fontSize: '1.9em' }} /> }} />
