@@ -52,6 +52,9 @@ function Dashboard() {
   const [readings, setReadings] = useState([]);
   const [barData, setBarData] = useState(defaultReadings);
 
+  let path = window.location.pathname
+  let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
+
   useEffect(() => {
     fetchReadings();
   }, []);
@@ -60,19 +63,34 @@ function Dashboard() {
   async function fetchReadings() {
     const apiData = await API.graphql({ query: listReadings });
     const readingAPI = apiData.data.listReadings.items;
+
     setReadings(readingAPI); // to get access to the raw temperatures data
 
     let fetchedTemp = [];
     readingAPI.map((r) => {
-      fetchedTemp.push(
-        {
-          name: r.time,
-          productID: r.productID,
-          time: r.time,
-          temperature: r.temperature,
-          humidity: r.humidity
+      if (!(path_product_name == '')){
+        if (path_product_name == r.productID[1]){
+          fetchedTemp.push(
+            {
+              name: r.time,
+              productID: r.productID,
+              time: r.time,
+              temperature: r.temperature,
+              humidity: r.humidity
+            }
+          )
         }
-      )
+      } else {
+        fetchedTemp.push(
+          {
+            name: r.time,
+            productID: r.productID,
+            time: r.time,
+            temperature: r.temperature,
+            humidity: r.humidity
+          }
+        )
+      }
     })
     setBarData(fetchedTemp.sort(compare));
   }
@@ -130,9 +148,10 @@ function Dashboard() {
           // templateRows="10rem 10rem"
           gap={tokens.space.small}
         >
-          <BarGraph graphData={barData} product={barData[0].productID} type={"Hour"} className="App"/>
-          <BarGraph graphData={barData} product={barData[0].productID} type={"Hourly Average"} className="App"/>
-          <BarGraph graphData={barData} product={barData[0].productID} type={"Day Average"} className="App"/>
+          {/* TODO: graph label should be the data productID specific to the graph and path */}
+          <BarGraph graphData={barData} product={path_product_name} type={"Hour"} className="App"/>
+          <BarGraph graphData={barData} product={path_product_name} type={"Hourly Average"} className="App"/>
+          <BarGraph graphData={barData} product={path_product_name} type={"Day Average"} className="App"/>
         </Grid>
       </View>
 

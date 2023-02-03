@@ -38,7 +38,7 @@ export default function BarGraph({graphData, product, type}) {
 
   return (
     <View>
-      <Heading className="App-text">Product {product[1]} ({product[0]})</Heading>
+      <Heading className="App-text">Product {product}</Heading>
       <Heading className="App-text">- {type} -</Heading>
       <BarChart
         width={graph_width}

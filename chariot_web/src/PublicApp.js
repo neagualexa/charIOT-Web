@@ -25,22 +25,6 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 function PublicApp({ signOut }) {
 
-  // const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-  // useEffect(() => {
-  //   // console.log(window.location.pathname)
-  //   function handleResize() {
-  //     setWindowDimensions(getWindowDimensions());
-  //     // console.log(windowDimensions)
-  //   }
-  //   window.addEventListener('resize', handleResize);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // },[])
-
-  // let height = windowDimensions.height;   
-  // let width = windowDimensions.width;     
-  
-
   return (
     <div>
       <div className="App">
@@ -61,6 +45,7 @@ const RoutesComponent = () => {
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
@@ -108,13 +93,5 @@ const MenuItem = (props) => {
   );
 }
 
-// WINDOW DIMENSIONS
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
-}
 
 export default withAuthenticator(PublicApp);

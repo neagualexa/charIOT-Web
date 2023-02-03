@@ -14,8 +14,12 @@ import { createProduct } from "../graphql/mutations";
 import React, { useState, useEffect } from "react";
 import '../App.css';
 import logo from '../assets/gold-circle.png';
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+
+  const navigate = useNavigate();
+  const handleClick = (path) => navigate(path);
 
   const [products, setProducts] = useState([]);
 
@@ -71,6 +75,11 @@ function Home() {
         return(
           <Card className="App-background" key={i}>
             <Button backgroundColor={(i%2==1)? colours.red : colours.gold} 
+              onClick={() => {
+                let to = '/dashboard/' + p.product_name;
+                console.log(to)
+                handleClick(to);
+              }}
               color="white" variation='primary' className="App-text"> Product {p.product_name} ( {p.MAC_address} ) </Button>
           </Card>
         );
