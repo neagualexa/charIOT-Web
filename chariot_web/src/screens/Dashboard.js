@@ -12,6 +12,8 @@ import {
   Flex,
   TextField,
   Button,
+  Grid,
+  useTheme,
   // Card,
 } from "@aws-amplify/ui-react";
 import '../App.css';
@@ -19,10 +21,12 @@ import BarGraph from "../components/chart";
 
 const defaultReadings = [
   { name:"Time1",
+    productID: "default",
     temperature: 10,
     humidity: 10
   },
   { name:"Time2",
+    productID: "default",
     temperature: 10,
     humidity: 10 
   }
@@ -30,10 +34,12 @@ const defaultReadings = [
 
 const defaultDayData = [
   { name:"Day A average",
+    productID: "default",
     temperature: 10,
     humidity: 4
   },
   { name:"Day B average",
+    productID: "default",
     temperature: 5,
     humidity: 2 
   }
@@ -41,21 +47,7 @@ const defaultDayData = [
 
 
 function Dashboard() {
-
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-  useEffect(() => {
-    // console.log(window.location.pathname)
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-      // console.log(windowDimensions)
-    }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  },[])
-
-  let height = windowDimensions.height;   
-  let width = windowDimensions.width;
+  const { tokens } = useTheme();
 
   const [readings, setReadings] = useState([]);
   const [barData, setBarData] = useState(defaultReadings);
@@ -75,12 +67,28 @@ function Dashboard() {
       fetchedTemp.push(
         {
           name: r.time,
+          productID: r.productID,
+          time: r.time,
           temperature: r.temperature,
           humidity: r.humidity
         }
       )
     })
-    setBarData(fetchedTemp);
+    setBarData(fetchedTemp.sort(compare));
+  }
+
+  function compare(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const dataA = a.time;
+    const dataB = b.time;
+
+    let comparison = 0;
+    if (dataA > dataB) {
+      comparison = 1;
+    } else if (dataA < dataB) {
+      comparison = -1;
+    }
+    return comparison;
   }
 
   // CREATE database entry
@@ -88,7 +96,9 @@ function Dashboard() {
     event.preventDefault();
     const form = new FormData(event.target);
     const data = {
+      // id: form.get("time"),
       time: form.get("time"),
+      productID: [form.get("product_mac"), form.get("product_name")],
       temperature: form.get("temp"),
       humidity: form.get("hum"),
     };
@@ -115,8 +125,15 @@ function Dashboard() {
       <div className="App-text">DASHBOARD CHECK</div>
 
       <View className="Dashboard">
-        <BarGraph graphData={barData} className="App"/>
-        <BarGraph graphData={defaultDayData} className="App"/>
+        <Grid
+          templateColumns="1fr 1fr"
+          // templateRows="10rem 10rem"
+          gap={tokens.space.small}
+        >
+          <BarGraph graphData={barData} product={barData[0].productID} type={"Hour"} className="App"/>
+          <BarGraph graphData={barData} product={barData[0].productID} type={"Hourly Average"} className="App"/>
+          <BarGraph graphData={barData} product={barData[0].productID} type={"Day Average"} className="App"/>
+        </Grid>
       </View>
 
       <View as="form" margin="3rem 0" onSubmit={createReadingData}>
@@ -141,6 +158,22 @@ function Dashboard() {
             name="hum"
             placeholder="Humidity"
             label="Humidity"
+            labelHidden
+            variation="quiet"
+            required
+          />
+          <TextField
+            name="product_mac"
+            placeholder="Product MAC"
+            label="Product MAC"
+            labelHidden
+            variation="quiet"
+            required
+          />
+          <TextField
+            name="product_name"
+            placeholder="Product Name"
+            label="Product Name"
             labelHidden
             variation="quiet"
             required

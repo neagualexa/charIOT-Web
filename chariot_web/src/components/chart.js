@@ -1,4 +1,5 @@
 // import "./styles.css";
+import { Heading, View } from "@aws-amplify/ui-react";
 import React, { useEffect, useState } from "react";
 import {
   BarChart,
@@ -20,7 +21,7 @@ function getWindowDimensions() {
 }
 
 
-export default function BarGraph({graphData}) {
+export default function BarGraph({graphData, product, type}) {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
@@ -36,6 +37,9 @@ export default function BarGraph({graphData}) {
   let graph_width = windowDimensions.width*0.4;     //500
 
   return (
+    <View>
+      <Heading className="App-text">Product {product[1]} ({product[0]})</Heading>
+      <Heading className="App-text">- {type} -</Heading>
       <BarChart
         width={graph_width}
         height={graph_height}
@@ -55,6 +59,7 @@ export default function BarGraph({graphData}) {
         <Bar dataKey="temperature" fill={colours.red} />
         <Bar dataKey="humidity" fill={colours.gold} />
       </BarChart>
+      </View>
   );
 }
 
