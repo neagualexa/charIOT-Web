@@ -31,7 +31,21 @@ function Home() {
   async function fetchProducts() {
     const apiData = await API.graphql({ query: listProducts });
     const productAPI = apiData.data.listProducts.items;
-    setProducts(productAPI); // to get access to the raw temperatures data
+    setProducts(productAPI.sort(compareProduct)); // to get access to the raw temperatures data
+  }
+
+  function compareProduct(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const dataA = a.product_name;
+    const dataB = b.product_name;
+
+    let comparison = 0;
+    if (dataA > dataB) {
+      comparison = 1;
+    } else if (dataA < dataB) {
+      comparison = -1;
+    }
+    return comparison;
   }
 
   // CREATE database entry
@@ -71,6 +85,15 @@ function Home() {
 
           <Heading className="App-text" level={1}>Choose which Product to view:</Heading>
       </Card>
+      <Card className="App-background">
+        <Button backgroundColor={colours.red} 
+          onClick={() => {
+            let to = '/dashboard';
+            console.log(to)
+            handleClick(to);
+          }}
+          color="white" variation='primary' className="App-text"> All Products </Button>
+          
       {products.map((p,i) => {
         return(
           <Card className="App-background" key={i}>
@@ -84,6 +107,7 @@ function Home() {
           </Card>
         );
       })}
+      </Card>
     </div>
   );
 }

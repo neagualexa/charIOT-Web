@@ -1,8 +1,10 @@
 import "@aws-amplify/ui-react/styles.css";
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
-import { listReadings } from "../graphql/queries";
+import { listReadings, listProducts } from "../graphql/queries";
 import { createReading } from "../graphql/mutations";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 import {
   withAuthenticator,
@@ -14,10 +16,13 @@ import {
   Button,
   Grid,
   useTheme,
+  SelectField,
+  Heading,
   // Card,
 } from "@aws-amplify/ui-react";
 import '../App.css';
 import BarGraph from "../components/chart";
+import { useNavigate } from "react-router-dom";
 
 const defaultReadings = [
   { name:"Time1",
@@ -51,13 +56,28 @@ function Dashboard() {
 
   const [readings, setReadings] = useState([]);
   const [barData, setBarData] = useState(defaultReadings);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState('');
 
   let path = window.location.pathname
   let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
+  const navigate = useNavigate();
+  const handleClick = (path) => navigate(path);
+  const handleChange = (event) => {
+    setSelectedProduct(event.target.value);
+    // console.log(event.target.value);
+    let to = event.target.value=='' ? '/dashboard' : '/dashboard/' + event.target.value;
+    handleClick(to);
+  };
+  useEffect(() => {
+    fetchReadings();
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     fetchReadings();
-  }, []);
+    fetchProducts();
+  }, [path]);
 
   // FETCH DATABASE ENTRIES
   async function fetchReadings() {
@@ -68,7 +88,8 @@ function Dashboard() {
 
     let fetchedTemp = [];
     readingAPI.map((r) => {
-      if (!(path_product_name == '')){
+      if (path_product_name != ''){
+        // console.log(path_product_name, r.productID[1])
         if (path_product_name == r.productID[1]){
           fetchedTemp.push(
             {
@@ -95,10 +116,30 @@ function Dashboard() {
     setBarData(fetchedTemp.sort(compare));
   }
 
+  async function fetchProducts() {
+    const apiData = await API.graphql({ query: listProducts });
+    const productAPI = apiData.data.listProducts.items;
+    setProducts(productAPI.sort(compareProduct)); // to get access to the raw temperatures data
+  }
+
   function compare(a, b) {
     // Use toUpperCase() to ignore character casing
     const dataA = a.time;
     const dataB = b.time;
+
+    let comparison = 0;
+    if (dataA > dataB) {
+      comparison = 1;
+    } else if (dataA < dataB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
+  function compareProduct(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const dataA = a.product_name;
+    const dataB = b.product_name;
 
     let comparison = 0;
     if (dataA > dataB) {
@@ -140,19 +181,69 @@ function Dashboard() {
 
   return (
     <View style={{paddingLeft:'10%', alignItems:'center', backgroundColor:'#1e0303', minHeight:'100vh'}}>
-      <div className="App-text">DASHBOARD CHECK</div>
-
-      <View className="Dashboard">
-        <Grid
-          templateColumns="1fr 1fr"
-          // templateRows="10rem 10rem"
-          gap={tokens.space.small}
+      <View style={{position:'absolute', top:'2%', right:'2%', width:'20vh'}}>
+        <SelectField
+          // label="Filter by device"
+          // descriptiveText="Filter by product"
+          inputStyles={{
+            backgroundColor: '#eac846',
+            border: `1px solid #eac846`,
+          }}
+          value={selectedProduct}
+          onChange={handleChange}
         >
-          {/* TODO: graph label should be the data productID specific to the graph and path */}
-          <BarGraph graphData={barData} product={path_product_name} type={"Hour"} className="App"/>
-          <BarGraph graphData={barData} product={path_product_name} type={"Hourly Average"} className="App"/>
-          <BarGraph graphData={barData} product={path_product_name} type={"Day Average"} className="App"/>
-        </Grid>
+          <option value={''} > All devices </option>
+          {products.map((p,i) => {
+            return(
+              <option value={p.product_name} key={i} > {p.product_name} </option>
+            );
+          })}
+        </SelectField>
+      </View>
+
+      <View className="Dashboard" style={{paddingTop:'5vh'}}>
+          {products.map((p,i) => {
+            if (path_product_name != ''){
+              if(p.product_name == path_product_name){
+                // see product graphs
+                return(
+                <div key={i} style={{paddingTop:'5vh'}}>
+                  <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
+                  <Grid
+                      templateColumns="1fr 1fr"
+                      // templateRows="10rem 10rem"
+                      gap={tokens.space.small}
+                    >
+                      <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
+                      <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
+                      <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>
+                  </Grid>
+                </div>
+                );
+              }
+            } else {
+              // see all graphs
+              let productData = barData.filter((r) => (r.productID[1] === p.product_name))
+              // console.log(productData)
+              return(
+              <div key={i} style={{paddingTop:'5vh'}}>
+                <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from all devices shown </Heading>
+                <Heading className="App-text" style={{paddingBottom:'2vh'}}> {i+1}) Readings from {p.product_name} </Heading>
+                <Grid
+                    templateColumns="1fr 1fr"
+                    // templateRows="10rem 10rem"
+                    gap={tokens.space.small}
+                    
+                  >
+                <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
+                <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
+                <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+                </Grid>
+              </div>
+              );
+              
+            }
+          })}
       </View>
 
       <View as="form" margin="3rem 0" onSubmit={createReadingData}>
@@ -205,15 +296,6 @@ function Dashboard() {
 
     </View>
   );
-}
-
-// WINDOW DIMENSIONS
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
 }
 
 export default withAuthenticator(Dashboard);
