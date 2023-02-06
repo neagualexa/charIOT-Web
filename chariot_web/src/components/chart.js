@@ -11,6 +11,8 @@ import {
   Legend
 } from "recharts";
 
+import { colours } from "../components/colours";
+
 // WINDOW DIMENSIONS
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -38,7 +40,7 @@ export default function BarGraph({graphData, product, type}) {
 
   return (
     <View>
-      <Heading className="App-text">Product {product}</Heading>
+      <Heading className="App-text">Device {product}</Heading>
       <Heading className="App-text">- {type} -</Heading>
       <BarChart
         width={graph_width}
@@ -52,18 +54,13 @@ export default function BarGraph({graphData, product, type}) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" stroke="white"/>
-        <YAxis stroke="white"/>
-        <Tooltip stroke="white"/>
+        <XAxis dataKey="name" stroke={colours.dark_grey}/>
+        <YAxis stroke={colours.dark_grey}/>
+        <Tooltip stroke={colours.dark_grey}/>
         <Legend />
-        <Bar dataKey="temperature" fill={colours.red} />
-        <Bar dataKey="humidity" fill={colours.gold} />
+        <Bar dataKey="temperature" fill={colours.dark_blue} />
+        <Bar dataKey="humidity" fill={colours.light_brown} />
       </BarChart>
       </View>
   );
-}
-
-const colours = {
-  red:"#db3d44",
-  gold:"#eac846"
 }

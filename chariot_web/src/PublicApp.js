@@ -13,6 +13,7 @@ import {
 import './App.css';
 import Home from './screens/Home';
 import Dashboard from './screens/Dashboard';
+import Settings from './screens/Settings';
 import NotFound from './screens/NotFound';
 
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
@@ -22,6 +23,8 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import { TiHomeOutline, TiLightbulb } from "react-icons/ti";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+
+import { colours } from "./components/colours";
 
 function PublicApp({ signOut }) {
 
@@ -33,7 +36,7 @@ function PublicApp({ signOut }) {
           <RoutesComponent />
         </Router>
       </div>
-      <Button onClick={signOut} backgroundColor="#db3d44" color="white" variation='primary'
+      <Button onClick={signOut} backgroundColor={colours.dark_blue} color={colours.white} variation='primary'
         style={{position: "fixed", bottom:'2%', right:'2%'}}>Sign Out</Button>
     </div>
   );
@@ -46,6 +49,7 @@ const RoutesComponent = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/*" element={<Dashboard />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
@@ -56,10 +60,10 @@ const SideBarMenu = () => {
     <React.Fragment>
       <SideNav style={{position: "fixed", top:0, left:0, height:'100vh'}}>
         <SideNav.Toggle />
-        <SideNav.Nav defaultSelected="home" >
+        <SideNav.Nav defaultSelected="home">
           <MenuItem props={{ key: "home", title: "Home", icon: <TiHomeOutline style={{ fontSize: '1.9em' }} /> }} />
           <MenuItem props={{ key: "dashboard", title: "Dashboard", icon: <MdOutlineSpaceDashboard style={{ fontSize: '1.75em' }} /> }} />
-          <MenuItem props={{ key: "aboutus", title: "About Us", icon: <TiLightbulb style={{ fontSize: '1.9em' }} /> }} />
+          <MenuItem props={{ key: "settings", title: "Settings", icon: <TiLightbulb style={{ fontSize: '1.9em' }} /> }} />
         </SideNav.Nav>
       </SideNav>
     </React.Fragment>

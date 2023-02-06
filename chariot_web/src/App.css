@@ -1,11 +1,11 @@
 .App {
   text-align: center;
-  background-color: #1e0303;
+  background-color: #FAEBCD;
   min-height: 100vh;
 }
 
 .App-background {
-  background-color: #1e0303;
+  background-color: #FAEBCD;
 }
 
 .App-logo {
@@ -20,23 +20,19 @@
 }
 
 .App-header {
-  background-color: #1e0303;
+  background-color: #FAEBCD;
   /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #1e0303;
 }
 
 .App-text {
   font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
+  color: #314E52;
 }
 
 .Dashboard {

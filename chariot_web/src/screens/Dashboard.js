@@ -24,6 +24,7 @@ import '../App.css';
 import BarGraph from "../components/chart";
 import { useNavigate } from "react-router-dom";
 import { Chip } from "@mui/material";
+import { colours } from "../components/colours";
 
 const defaultReadings = [
   { name:"Time1",
@@ -74,11 +75,13 @@ function Dashboard() {
   useEffect(() => {
     fetchReadings();
     fetchProducts();
+    // getLiveData();
   }, []);
 
   useEffect(() => {
     fetchReadings();
     fetchProducts();
+    // getLiveData();
   }, [path]);
 
   // FETCH DATABASE ENTRIES
@@ -119,12 +122,15 @@ function Dashboard() {
 
     setBarData(sortFetchedData);
 
+    getLiveData(sortFetchedData);
+  }
+
+  function getLiveData(data) {
     // GET CURRENT/LAST VALUES FOR DATA
-    var reversedData = sortFetchedData;
-    // reversedData.reverse();
+    var reversedData = data;
     var unique = [];
     var distinctData = [];
-    for( let i = 0; i < reversedData.length; i++ ){
+    for( let i = reversedData.length-1; i >=0 ; i-- ){
       if( !unique[reversedData[i].productID]){
         distinctData.push(reversedData[i]);
         unique[reversedData[i].productID] = 1;
@@ -198,14 +204,14 @@ function Dashboard() {
 
 
   return (
-    <View style={{paddingLeft:'10%', alignItems:'center', backgroundColor:'#1e0303', minHeight:'100vh'}}>
+    <View style={{paddingLeft:'10%', alignItems:'center', minHeight:'100vh'}}>
       <View style={{position:'absolute', top:'2%', right:'2%', width:'20vh'}}>
         <SelectField
           // label="Filter by device"
           // descriptiveText="Filter by product"
           inputStyles={{
-            backgroundColor: '#eac846',
-            border: `1px solid #eac846`,
+            backgroundColor: '#F2A154',
+            border: `1px solid #F2A154`,
           }}
           value={selectedProduct}
           onChange={handleChange}
@@ -223,8 +229,7 @@ function Dashboard() {
           {products.map((p,i) => {
             if (path_product_name != ''){
               if(p.product_name == path_product_name){
-                // see product graphs
-                let liveData = barData.at(-1)
+                // 1) SEE DASHBOARD FOR ONLY ONE DEVICE
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
                   <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
@@ -233,8 +238,11 @@ function Dashboard() {
                       // templateRows="10rem 10rem"
                       gap={tokens.space.small}
                     >
-                      <View>
-                        <Chip label={liveData.temperature} color="success"/>
+                      {/* TODO: KEEPS ERRORING AS livedata IS UNDEFINED */}
+                      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
+                        <Heading className="App-text" >Live readings</Heading>
+                        <Heading className="App-text" level={2}>Current Temperature: {currentDeviceReadings[0].temperature}</Heading>
+                        <Heading className="App-text" level={2}>Current Humidity: {currentDeviceReadings[0].humidity}</Heading>
                       </View>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
@@ -244,10 +252,10 @@ function Dashboard() {
                 );
               }
             } else {
-              // see all graphs
+              // SEE DASHBOARD WITH ALL DEVICES AND THEIR GRAPHS
               let productData = barData.filter((r) => (r.productID[1] === p.product_name))
-              let liveData = productData.at(-1)
-              // console.log(productData)
+              let liveData = currentDeviceReadings!=undefined ? currentDeviceReadings[i] : 
+              console.log(liveData, currentDeviceReadings)
               return(
               <div key={i} style={{paddingTop:'5vh'}}>
                 <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from all devices shown </Heading>
@@ -258,11 +266,12 @@ function Dashboard() {
                     gap={tokens.space.small}
                     
                   >
-                  <View style={{display:'flex', flexDirection:'column'}}>
-                    {/* TODO: it errors sometimes, when changing from device to all devices view */}
-                    <Chip label={"Current Temperature: "+liveData.temperature} color="success" style={{padding:'0.5vh'}}/>
-                    <Chip label={"Current Humidity: "+liveData.humidity} color="success" style={{padding:'0.5vh'}}/>
-                  </View>
+                    {/* TODO: NOT WORKING KEEPS ERRORING AS livedata IS UNDEFINED */}
+                  {/* <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
+                      <Heading className="App-text" >Live readings</Heading>
+                      <Heading className="App-text" level={2}>Current Temperature: {liveData.temperature}</Heading>
+                      <Heading className="App-text" level={2}>Current Humidity: {liveData.humidity}</Heading>
+                  </View> */}
                   <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>

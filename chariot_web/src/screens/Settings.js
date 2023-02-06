@@ -13,12 +13,12 @@ import { listProducts } from "../graphql/queries";
 import { createProduct } from "../graphql/mutations";
 import React, { useState, useEffect } from "react";
 import '../App.css';
-import logo from '../assets/gold-circle.png';
 import { useNavigate } from "react-router-dom";
+import RangeSlider from "../components/slider";
 
 import { colours } from "../components/colours";
 
-function Home() {
+function Settings() {
 
   const navigate = useNavigate();
   const handleClick = (path) => navigate(path);
@@ -80,36 +80,29 @@ function Home() {
   return (
     <div className="App" style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
       <Card className="App-background">
-          <Image src={logo} className="App-logo" alt="logo" />
-          <Heading className="App-text" level={5}>Welcome to charIOT</Heading>
-          <Heading className="App-text" level={5} style={{padding:'2vh'}}>Charioteering towards the future!</Heading>
-          <Heading className="App-text" level={2}>Choose which device data to view:</Heading>
+          <Heading className="App-text" level={5}>Settings</Heading>
+          <Heading className="App-text" level={2}>Update the settings of the senors in the IOT devices</Heading>
       </Card>
-      <Card className="App-background">
-        <Button backgroundColor={colours.light_brown} 
-          onClick={() => {
-            let to = '/dashboard';
-            console.log(to)
-            handleClick(to);
-          }}
-          color={colours.dark_red} variation='primary' className="App-text"> All Products </Button>
-          
+      
+      <View className="Dashboard">          
       {products.map((p,i) => {
         return(
           <Card className="App-background" key={i}>
-            <Button backgroundColor={(i%2==1)? colours.light_brown : colours.gold} 
+              <Heading className="App-text" level={5}>Device {p.product_name}</Heading>
+              <RangeSlider className="App-background"/>
+              <Button backgroundColor={(i%2==1)? colours.light_brown : colours.gold} 
               onClick={() => {
                 let to = '/dashboard/' + p.product_name;
                 console.log(to)
                 handleClick(to);
               }}
-              color={colours.dark_red} variation='primary' className="App-text"> Product {p.product_name} ( {p.MAC_address} ) </Button>
+              color={colours.dark_red} variation='primary' className="App-text"> Check readings of {p.product_name} </Button>
           </Card>
         );
       })}
-      </Card>
+      </View>
     </div>
   );
 }
 
-export default withAuthenticator(Home);
+export default withAuthenticator(Settings);
