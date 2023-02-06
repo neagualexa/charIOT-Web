@@ -23,6 +23,7 @@ import {
 import '../App.css';
 import BarGraph from "../components/chart";
 import { useNavigate } from "react-router-dom";
+import { Chip } from "@mui/material";
 
 const defaultReadings = [
   { name:"Time1",
@@ -58,6 +59,7 @@ function Dashboard() {
   const [barData, setBarData] = useState(defaultReadings);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
+  const [currentDeviceReadings, setCurrentDeviceReadings] = useState([])
 
   let path = window.location.pathname
   let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
@@ -86,12 +88,12 @@ function Dashboard() {
 
     setReadings(readingAPI); // to get access to the raw temperatures data
 
-    let fetchedTemp = [];
+    let fetchedData = [];
     readingAPI.map((r) => {
       if (path_product_name != ''){
         // console.log(path_product_name, r.productID[1])
         if (path_product_name == r.productID[1]){
-          fetchedTemp.push(
+          fetchedData.push(
             {
               name: r.time,
               productID: r.productID,
@@ -99,10 +101,10 @@ function Dashboard() {
               temperature: r.temperature,
               humidity: r.humidity
             }
-          )
+          );
         }
       } else {
-        fetchedTemp.push(
+        fetchedData.push(
           {
             name: r.time,
             productID: r.productID,
@@ -110,10 +112,26 @@ function Dashboard() {
             temperature: r.temperature,
             humidity: r.humidity
           }
-        )
+        );
       }
     })
-    setBarData(fetchedTemp.sort(compare));
+    let sortFetchedData = fetchedData.sort(compare);
+
+    setBarData(sortFetchedData);
+
+    // GET CURRENT/LAST VALUES FOR DATA
+    var reversedData = sortFetchedData;
+    // reversedData.reverse();
+    var unique = [];
+    var distinctData = [];
+    for( let i = 0; i < reversedData.length; i++ ){
+      if( !unique[reversedData[i].productID]){
+        distinctData.push(reversedData[i]);
+        unique[reversedData[i].productID] = 1;
+      }
+    }
+    // console.log(distinctData);
+    setCurrentDeviceReadings(distinctData);
   }
 
   async function fetchProducts() {
@@ -206,6 +224,7 @@ function Dashboard() {
             if (path_product_name != ''){
               if(p.product_name == path_product_name){
                 // see product graphs
+                let liveData = barData.at(-1)
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
                   <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
@@ -214,6 +233,9 @@ function Dashboard() {
                       // templateRows="10rem 10rem"
                       gap={tokens.space.small}
                     >
+                      <View>
+                        <Chip label={liveData.temperature} color="success"/>
+                      </View>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>
@@ -224,6 +246,7 @@ function Dashboard() {
             } else {
               // see all graphs
               let productData = barData.filter((r) => (r.productID[1] === p.product_name))
+              let liveData = productData.at(-1)
               // console.log(productData)
               return(
               <div key={i} style={{paddingTop:'5vh'}}>
@@ -235,9 +258,14 @@ function Dashboard() {
                     gap={tokens.space.small}
                     
                   >
-                <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
-                <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
-                <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+                  <View style={{display:'flex', flexDirection:'column'}}>
+                    {/* TODO: it errors sometimes, when changing from device to all devices view */}
+                    <Chip label={"Current Temperature: "+liveData.temperature} color="success" style={{padding:'0.5vh'}}/>
+                    <Chip label={"Current Humidity: "+liveData.humidity} color="success" style={{padding:'0.5vh'}}/>
+                  </View>
+                  <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
+                  <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
+                  <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
                 </Grid>
               </div>
               );
