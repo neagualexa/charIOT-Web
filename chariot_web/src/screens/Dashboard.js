@@ -92,6 +92,7 @@ function Dashboard() {
     setReadings(readingAPI); // to get access to the raw temperatures data
 
     let fetchedData = [];
+    // let setData = new Set([]);
     readingAPI.map((r) => {
       if (path_product_name != ''){
         // console.log(path_product_name, r.productID[1])
@@ -105,6 +106,10 @@ function Dashboard() {
               humidity: r.humidity
             }
           );
+          // if (setData.has(e => e.productID === r.productID).length > 0) {
+          //   setData.delete(r);
+          //   setData.add(r);
+          // }
         }
       } else {
         fetchedData.push(
@@ -116,17 +121,34 @@ function Dashboard() {
             humidity: r.humidity
           }
         );
+        // if (setData.has(e => e.productID === r.productID).length > 0) {
+        //   setData.delete(r);
+        //   setData.add(r);
+        // }
       }
     })
     let sortFetchedData = fetchedData.sort(compare);
 
     setBarData(sortFetchedData);
-
-    getLiveData(sortFetchedData);
+    // console.log(setData)
+    // getLiveData(sortFetchedData);
   }
 
   function getLiveData(data) {
     // GET CURRENT/LAST VALUES FOR DATA
+
+    var unique = [];
+    data.map((d,i) => {
+      if (unique.filter(e => e.productID === d.productID).length > 0) {
+        unique.filter(e => e.productID === d.productID).delete();
+        unique.push(d);
+      } else {
+        unique.push(d);
+      }
+    })
+    
+    console.log(unique)
+
     var reversedData = data;
     var unique = [];
     var distinctData = [];
@@ -239,11 +261,11 @@ function Dashboard() {
                       gap={tokens.space.small}
                     >
                       {/* TODO: KEEPS ERRORING AS livedata IS UNDEFINED */}
-                      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
-                        <Heading className="App-text" >Live readings</Heading>
-                        <Heading className="App-text" level={2}>Current Temperature: {currentDeviceReadings[0].temperature}</Heading>
-                        <Heading className="App-text" level={2}>Current Humidity: {currentDeviceReadings[0].humidity}</Heading>
-                      </View>
+                      {/* <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}> */}
+                        {/* <Heading className="App-text" >Live readings</Heading> */}
+                        {/* <Heading className="App-text" level={2}>Current Temperature: {currentDeviceReadings[0].temperature}</Heading> */}
+                        {/* <Heading className="App-text" level={2}>Current Humidity: {currentDeviceReadings[0].humidity}</Heading> */}
+                      {/* </View> */}
                       <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>

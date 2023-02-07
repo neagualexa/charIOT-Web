@@ -19,7 +19,8 @@ import NotFound from './screens/NotFound';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 // Be sure to include styles at some point, probably during your bootstraping
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+// import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import './components/react-sidenav.css'
 
 import { TiHomeOutline, TiLightbulb } from "react-icons/ti";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
