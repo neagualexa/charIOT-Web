@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import RangeSlider from "../components/slider";
 
 import { colours } from "../components/colours";
+import { Divider } from "@mui/material";
 
 function Settings() {
 
@@ -79,24 +80,19 @@ function Settings() {
 
   return (
     <div className="App" style={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
+      <Divider />
       <Card className="App-background">
           <Heading className="App-text" level={5}>Settings</Heading>
           <Heading className="App-text" level={2}>Update the settings of the senors in the IOT devices</Heading>
       </Card>
+      <Divider />
       
       <View className="Dashboard">          
       {products.map((p,i) => {
         return(
           <Card className="App-background" key={i}>
               <Heading className="App-text" level={5}>Device {p.product_name}</Heading>
-              <RangeSlider className="App-background"/>
-              <Button backgroundColor={(i%2==1)? colours.light_brown : colours.gold} 
-              onClick={() => {
-                let to = '/dashboard/' + p.product_name;
-                console.log(to)
-                handleClick(to);
-              }}
-              color={colours.dark_red} variation='primary' className="App-text"> Check readings of {p.product_name} </Button>
+              <RangeSlider className="App-background" product={p.product_name}/>
           </Card>
         );
       })}

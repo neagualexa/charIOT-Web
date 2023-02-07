@@ -30,6 +30,39 @@ export const listProducts = /* GraphQL */ `
     }
   }
 `;
+export const getLiveData = /* GraphQL */ `
+  query GetLiveData($id: ID!) {
+    getLiveData(id: $id) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLiveData = /* GraphQL */ `
+  query ListLiveData(
+    $filter: ModelLiveDataFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLiveData(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        productID
+        temperature
+        humidity
+        iso
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getReading = /* GraphQL */ `
   query GetReading($id: ID!) {
     getReading(id: $id) {
@@ -128,6 +161,37 @@ export const listAverageDayReadings = /* GraphQL */ `
         id
         productID
         time
+        temperature
+        humidity
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDeviceSetting = /* GraphQL */ `
+  query GetDeviceSetting($id: ID!) {
+    getDeviceSetting(id: $id) {
+      id
+      productID
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listDeviceSettings = /* GraphQL */ `
+  query ListDeviceSettings(
+    $filter: ModelDeviceSettingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDeviceSettings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        productID
         temperature
         humidity
         createdAt

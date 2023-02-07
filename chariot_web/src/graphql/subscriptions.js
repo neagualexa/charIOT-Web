@@ -34,6 +34,45 @@ export const onDeleteProduct = /* GraphQL */ `
     }
   }
 `;
+export const onCreateLiveData = /* GraphQL */ `
+  subscription OnCreateLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
+    onCreateLiveData(filter: $filter) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLiveData = /* GraphQL */ `
+  subscription OnUpdateLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
+    onUpdateLiveData(filter: $filter) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLiveData = /* GraphQL */ `
+  subscription OnDeleteLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
+    onDeleteLiveData(filter: $filter) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateReading = /* GraphQL */ `
   subscription OnCreateReading($filter: ModelSubscriptionReadingFilterInput) {
     onCreateReading(filter: $filter) {
@@ -156,6 +195,48 @@ export const onDeleteAverageDayReading = /* GraphQL */ `
       id
       productID
       time
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateDeviceSetting = /* GraphQL */ `
+  subscription OnCreateDeviceSetting(
+    $filter: ModelSubscriptionDeviceSettingFilterInput
+  ) {
+    onCreateDeviceSetting(filter: $filter) {
+      id
+      productID
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDeviceSetting = /* GraphQL */ `
+  subscription OnUpdateDeviceSetting(
+    $filter: ModelSubscriptionDeviceSettingFilterInput
+  ) {
+    onUpdateDeviceSetting(filter: $filter) {
+      id
+      productID
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDeviceSetting = /* GraphQL */ `
+  subscription OnDeleteDeviceSetting(
+    $filter: ModelSubscriptionDeviceSettingFilterInput
+  ) {
+    onDeleteDeviceSetting(filter: $filter) {
+      id
+      productID
       temperature
       humidity
       createdAt

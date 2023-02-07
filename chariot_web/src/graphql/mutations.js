@@ -43,6 +43,54 @@ export const deleteProduct = /* GraphQL */ `
     }
   }
 `;
+export const createLiveData = /* GraphQL */ `
+  mutation CreateLiveData(
+    $input: CreateLiveDataInput!
+    $condition: ModelLiveDataConditionInput
+  ) {
+    createLiveData(input: $input, condition: $condition) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLiveData = /* GraphQL */ `
+  mutation UpdateLiveData(
+    $input: UpdateLiveDataInput!
+    $condition: ModelLiveDataConditionInput
+  ) {
+    updateLiveData(input: $input, condition: $condition) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLiveData = /* GraphQL */ `
+  mutation DeleteLiveData(
+    $input: DeleteLiveDataInput!
+    $condition: ModelLiveDataConditionInput
+  ) {
+    deleteLiveData(input: $input, condition: $condition) {
+      id
+      productID
+      temperature
+      humidity
+      iso
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createReading = /* GraphQL */ `
   mutation CreateReading(
     $input: CreateReadingInput!
@@ -180,6 +228,51 @@ export const deleteAverageDayReading = /* GraphQL */ `
       id
       productID
       time
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createDeviceSetting = /* GraphQL */ `
+  mutation CreateDeviceSetting(
+    $input: CreateDeviceSettingInput!
+    $condition: ModelDeviceSettingConditionInput
+  ) {
+    createDeviceSetting(input: $input, condition: $condition) {
+      id
+      productID
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDeviceSetting = /* GraphQL */ `
+  mutation UpdateDeviceSetting(
+    $input: UpdateDeviceSettingInput!
+    $condition: ModelDeviceSettingConditionInput
+  ) {
+    updateDeviceSetting(input: $input, condition: $condition) {
+      id
+      productID
+      temperature
+      humidity
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDeviceSetting = /* GraphQL */ `
+  mutation DeleteDeviceSetting(
+    $input: DeleteDeviceSettingInput!
+    $condition: ModelDeviceSettingConditionInput
+  ) {
+    deleteDeviceSetting(input: $input, condition: $condition) {
+      id
+      productID
       temperature
       humidity
       createdAt

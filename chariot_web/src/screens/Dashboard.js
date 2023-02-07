@@ -1,15 +1,11 @@
 import "@aws-amplify/ui-react/styles.css";
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
-import { listReadings, listProducts } from "../graphql/queries";
+import { listReadings, listProducts, listLiveData } from "../graphql/queries";
 import { createReading } from "../graphql/mutations";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 
 import {
   withAuthenticator,
-  // Heading,
-  // Image,
   View,
   Flex,
   TextField,
@@ -18,12 +14,10 @@ import {
   useTheme,
   SelectField,
   Heading,
-  // Card,
 } from "@aws-amplify/ui-react";
 import '../App.css';
 import BarGraph from "../components/chart";
 import { useNavigate } from "react-router-dom";
-import { Chip } from "@mui/material";
 import { colours } from "../components/colours";
 
 const defaultReadings = [
@@ -39,28 +33,26 @@ const defaultReadings = [
   }
 ]
 
-const defaultDayData = [
-  { name:"Day A average",
+const defaultLive = [
+  { 
     productID: "default",
     temperature: 10,
-    humidity: 4
-  },
-  { name:"Day B average",
-    productID: "default",
-    temperature: 5,
-    humidity: 2 
+    humidity: 10,
+    iso: "ISO X"
   }
-];
+]
+
 
 
 function Dashboard() {
   const { tokens } = useTheme();
 
+  // always set the default value to some defaults to avoid undefined errors in html build
   const [readings, setReadings] = useState([]);
   const [barData, setBarData] = useState(defaultReadings);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
-  const [currentDeviceReadings, setCurrentDeviceReadings] = useState([])
+  const [liveData, setLiveData] = useState(defaultLive); // TODO: still errors at some undefined behaviour TODO
 
   let path = window.location.pathname
   let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
@@ -75,20 +67,19 @@ function Dashboard() {
   useEffect(() => {
     fetchReadings();
     fetchProducts();
-    // getLiveData();
+    fetchLiveData();
   }, []);
 
   useEffect(() => {
     fetchReadings();
     fetchProducts();
-    // getLiveData();
+    fetchLiveData();
   }, [path]);
 
   // FETCH DATABASE ENTRIES
   async function fetchReadings() {
     const apiData = await API.graphql({ query: listReadings });
     const readingAPI = apiData.data.listReadings.items;
-
     setReadings(readingAPI); // to get access to the raw temperatures data
 
     let fetchedData = [];
@@ -106,10 +97,6 @@ function Dashboard() {
               humidity: r.humidity
             }
           );
-          // if (setData.has(e => e.productID === r.productID).length > 0) {
-          //   setData.delete(r);
-          //   setData.add(r);
-          // }
         }
       } else {
         fetchedData.push(
@@ -121,45 +108,17 @@ function Dashboard() {
             humidity: r.humidity
           }
         );
-        // if (setData.has(e => e.productID === r.productID).length > 0) {
-        //   setData.delete(r);
-        //   setData.add(r);
-        // }
       }
     })
     let sortFetchedData = fetchedData.sort(compare);
-
     setBarData(sortFetchedData);
-    // console.log(setData)
-    // getLiveData(sortFetchedData);
   }
 
-  function getLiveData(data) {
-    // GET CURRENT/LAST VALUES FOR DATA
-
-    var unique = [];
-    data.map((d,i) => {
-      if (unique.filter(e => e.productID === d.productID).length > 0) {
-        unique.filter(e => e.productID === d.productID).delete();
-        unique.push(d);
-      } else {
-        unique.push(d);
-      }
-    })
-    
-    console.log(unique)
-
-    var reversedData = data;
-    var unique = [];
-    var distinctData = [];
-    for( let i = reversedData.length-1; i >=0 ; i-- ){
-      if( !unique[reversedData[i].productID]){
-        distinctData.push(reversedData[i]);
-        unique[reversedData[i].productID] = 1;
-      }
-    }
-    // console.log(distinctData);
-    setCurrentDeviceReadings(distinctData);
+  async function fetchLiveData() {
+    const apiData = await API.graphql({ query: listLiveData });
+    const dataAPI = apiData.data.listLiveData.items;
+    setLiveData(dataAPI); // to get access to the raw temperatures data
+    // console.log(dataAPI)
   }
 
   async function fetchProducts() {
@@ -168,6 +127,35 @@ function Dashboard() {
     setProducts(productAPI.sort(compareProduct)); // to get access to the raw temperatures data
   }
 
+  // function getLiveData(data) {
+  //   // GET CURRENT/LAST VALUES FOR DATA
+
+  //   var unique = [];
+  //   data.map((d,i) => {
+  //     if (unique.filter(e => e.productID === d.productID).length > 0) {
+  //       unique.filter(e => e.productID === d.productID).delete();
+  //       unique.push(d);
+  //     } else {
+  //       unique.push(d);
+  //     }
+  //   })
+    
+  //   console.log(unique)
+
+  //   var reversedData = data;
+  //   var unique = [];
+  //   var distinctData = [];
+  //   for( let i = reversedData.length-1; i >=0 ; i-- ){
+  //     if( !unique[reversedData[i].productID]){
+  //       distinctData.push(reversedData[i]);
+  //       unique[reversedData[i].productID] = 1;
+  //     }
+  //   }
+  //   // console.log(distinctData);
+  //   setCurrentDeviceReadings(distinctData);
+  // }
+
+  // COMPARISON FOR SORTING
   function compare(a, b) {
     // Use toUpperCase() to ignore character casing
     const dataA = a.time;
@@ -252,6 +240,7 @@ function Dashboard() {
             if (path_product_name != ''){
               if(p.product_name == path_product_name){
                 // 1) SEE DASHBOARD FOR ONLY ONE DEVICE
+                let productLive = liveData.length==0 ? defaultLive[0] : liveData.filter((r) => (r.productID[1] === p.product_name))[0]
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
                   <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
@@ -260,12 +249,12 @@ function Dashboard() {
                       // templateRows="10rem 10rem"
                       gap={tokens.space.small}
                     >
-                      {/* TODO: KEEPS ERRORING AS livedata IS UNDEFINED */}
-                      {/* <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}> */}
-                        {/* <Heading className="App-text" >Live readings</Heading> */}
-                        {/* <Heading className="App-text" level={2}>Current Temperature: {currentDeviceReadings[0].temperature}</Heading> */}
-                        {/* <Heading className="App-text" level={2}>Current Humidity: {currentDeviceReadings[0].humidity}</Heading> */}
-                      {/* </View> */}
+                      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
+                          <Heading className="App-text" >Live readings</Heading>
+                          <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
+                          <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
+                          <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
+                      </View>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>
@@ -274,10 +263,9 @@ function Dashboard() {
                 );
               }
             } else {
-              // SEE DASHBOARD WITH ALL DEVICES AND THEIR GRAPHS
+              // 2) SEE DASHBOARD WITH ALL DEVICES AND THEIR GRAPHS
               let productData = barData.filter((r) => (r.productID[1] === p.product_name))
-              let liveData = currentDeviceReadings!=undefined ? currentDeviceReadings[i] : 
-              console.log(liveData, currentDeviceReadings)
+              let productLive = liveData.filter((r) => (r.productID[1] === p.product_name))[0]
               return(
               <div key={i} style={{paddingTop:'5vh'}}>
                 <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from all devices shown </Heading>
@@ -288,12 +276,12 @@ function Dashboard() {
                     gap={tokens.space.small}
                     
                   >
-                    {/* TODO: NOT WORKING KEEPS ERRORING AS livedata IS UNDEFINED */}
-                  {/* <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
+                  <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
                       <Heading className="App-text" >Live readings</Heading>
-                      <Heading className="App-text" level={2}>Current Temperature: {liveData.temperature}</Heading>
-                      <Heading className="App-text" level={2}>Current Humidity: {liveData.humidity}</Heading>
-                  </View> */}
+                      <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
+                      <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
+                      <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
+                  </View>
                   <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
@@ -305,7 +293,7 @@ function Dashboard() {
           })}
       </View>
 
-      <View as="form" margin="3rem 0" onSubmit={createReadingData}>
+      {/* <View as="form" margin="3rem 0" onSubmit={createReadingData}>
         <Flex direction="row" justifyContent="center" backgroundColor={'white'}>
           <TextField
             name="time"
@@ -351,7 +339,7 @@ function Dashboard() {
             Create Data
           </Button>
         </Flex>
-      </View>
+      </View> */}
 
     </View>
   );

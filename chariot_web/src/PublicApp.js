@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import "@aws-amplify/ui-react/styles.css";
 import {
   withAuthenticator,
-  Button,
-  // Heading,
-  // Image,
-  // View,
-  // Card,
+  Button
 } from "@aws-amplify/ui-react";
 
 // import logo from './assets/gold-circle.png';
