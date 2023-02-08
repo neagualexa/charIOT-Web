@@ -262,7 +262,7 @@ function Dashboard() {
 
 
   return (
-    <View style={{paddingLeft:'10%', alignItems:'center', minHeight:'100vh'}}>
+    <View style={{paddingLeft:'7%', alignItems:'center', minHeight:'100vh', paddingBottom:'4%'}}>
       <View style={{position:'absolute', top:'2%', right:'2%', width:'20vh'}}>
         <SelectField
           // label="Filter by device"

@@ -109,6 +109,9 @@ function Home() {
             );
           })}
         </Card>
+        <View style={{bottom:'1%', color:'grey'}}>
+          ©2023, CharIOT, Inc. and its affiliates. All rights reserved. CharIOT Confidential and Trademark.
+        </View>
       </Card>
     </div>
   );
