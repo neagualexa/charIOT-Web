@@ -89,10 +89,10 @@ function Home() {
         <Button backgroundColor={colours.light_brown} 
           onClick={() => {
             let to = '/dashboard';
-            console.log(to)
+            // console.log(to)
             handleClick(to);
           }}
-          color={colours.dark_red} variation='primary' className="App-text"> All Products </Button>
+          color={colours.dark_red} variation='primary' className="App-text"> All Devices </Button>
       
         <Card className="App-background"> 
           {products.map((p,i) => {
@@ -101,10 +101,10 @@ function Home() {
                 <Button backgroundColor={(i%2==1)? colours.light_brown : colours.gold} 
                   onClick={() => {
                     let to = '/dashboard/' + p.product_name;
-                    console.log(to)
+                    // console.log(to)
                     handleClick(to);
                   }}
-                  color={colours.dark_red} variation='primary' className="App-text"> Product {p.product_name} ( {p.MAC_address} ) </Button>
+                  color={colours.dark_red} variation='primary' className="App-text"> Device {p.product_name} ( {p.MAC_address} ) </Button>
               </View>
             );
           })}

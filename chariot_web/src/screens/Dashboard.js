@@ -24,12 +24,18 @@ const defaultReadings = [
   { name:"Time1",
     productID: "default",
     temperature: 10,
-    humidity: 10
+    humidity: 10,
+    pressure: 10,
+    iso: 'ISO X',
+    us_fed: 'Class X'
   },
   { name:"Time2",
     productID: "default",
     temperature: 10,
-    humidity: 10 
+    humidity: 10,
+    pressure: 10,
+    iso: 'ISO X',
+    us_fed: 'Class X' 
   }
 ]
 
@@ -38,7 +44,9 @@ const defaultLive = [
     productID: "default",
     temperature: 10,
     humidity: 10,
-    iso: "ISO X"
+    pressure: 10,
+    iso: 'ISO X',
+    us_fed: 'Class X'
   }
 ]
 
@@ -92,7 +100,10 @@ function Dashboard() {
               productID: r.productID,
               time: r.time,
               temperature: r.temperature,
-              humidity: r.humidity
+              humidity: r.humidity,
+              pressure: r.pressure,
+              iso: r.iso,
+              us_fed: r.us_fed
             }
           );
         }
@@ -103,12 +114,16 @@ function Dashboard() {
             productID: r.productID,
             time: r.time,
             temperature: r.temperature,
-            humidity: r.humidity
+            humidity: r.humidity,
+            pressure: r.pressure,
+            iso: r.iso,
+            us_fed: r.us_fed
           }
         );
       }
     })
     let sortFetchedData = fetchedData.sort(compare);
+    // console.log(sortFetchedData)
     setBarData(sortFetchedData);
     getLiveData(sortFetchedData);
   }
@@ -129,19 +144,6 @@ function Dashboard() {
 
   function getLiveData(data) {
     // GET CURRENT/LAST VALUES FOR DATA
-
-    var unique = [];
-    data.map((d,i) => {
-      if (unique.filter(e => e.productID === d.productID).length > 0) {
-        unique.filter(e => e.productID === d.productID).delete();
-        unique.push(d);
-      } else {
-        unique.push(d);
-      }
-    })
-    
-    console.log(unique)
-
     var reversedData = data;
     var unique = [];
     var distinctData = [];
@@ -217,9 +219,11 @@ function Dashboard() {
       return(
       <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
           <Heading className="App-text" >Live readings</Heading>
-          <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
+          <Heading className="App-text" level={2}>ISO14644-1: {productLive.iso}</Heading>
+          <Heading className="App-text" level={2}>US FED STD 209E: {productLive.us_fed}</Heading>
           <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
           <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
+          <Heading className="App-text" level={2}>Current Pressure: {productLive.pressure}</Heading>
       </View>
       );
     }
@@ -254,7 +258,7 @@ function Dashboard() {
               if(p.product_name == path_product_name){
                 // 1) SEE DASHBOARD FOR ONLY ONE DEVICE
                 let productLive = liveData.length==0 ? defaultLive[0] : liveData.filter((r) => (r.productID[1] === p.product_name))[0]
-                console.log("product for one:", productLive)
+                // console.log("product for one:", productLive)
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
                   <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
@@ -275,7 +279,7 @@ function Dashboard() {
               // 2) SEE DASHBOARD WITH ALL DEVICES AND THEIR GRAPHS
               let productData = barData.filter((r) => (r.productID[1] === p.product_name))
               let productLive = liveData.filter((r) => (r.productID[1] === p.product_name))[0]
-              console.log("product for all devices:", productLive)
+              // console.log("product for all devices:", productLive)
               return(
               <div key={i} style={{paddingTop:'5vh'}}>
                 <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from all devices shown </Heading>

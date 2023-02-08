@@ -13,7 +13,9 @@ type LiveData @model @auth(rules: [ { allow: public } ] ){
   productID: [String!]!   # [MAC_address of product, Name product]
   temperature: Float
   humidity: Float
+  pressure: Float
   iso: String
+  us_fed: String
 }
 
 type Reading @model @auth(rules: [ { allow: public } ] ){
@@ -22,6 +24,9 @@ type Reading @model @auth(rules: [ { allow: public } ] ){
   time: String!
   temperature: Float
   humidity: Float
+  pressure: Float
+  iso: String
+  us_fed: String
 }
 
 type AverageHourReading @model @auth(rules: [ { allow: public } ] ){
@@ -30,6 +35,9 @@ type AverageHourReading @model @auth(rules: [ { allow: public } ] ){
   time: String!
   temperature: Float
   humidity: Float
+  pressure: Float
+  iso: String
+  us_fed: String
 }
 
 type AverageDayReading @model @auth(rules: [ { allow: public } ] ){
@@ -38,6 +46,9 @@ type AverageDayReading @model @auth(rules: [ { allow: public } ] ){
   time: String!
   temperature: Float
   humidity: Float
+  pressure: Float
+  iso: String
+  us_fed: String
 }
 
 type DeviceSetting @model @auth(rules: [ { allow: public } ] ){
@@ -45,4 +56,7 @@ type DeviceSetting @model @auth(rules: [ { allow: public } ] ){
   productID: [String!]!   # [MAC_address of product, Name product]
   temperature: [Float!]!  # [lower and upper bounds]
   humidity: [Float!]!     # [lower and upper bounds]
+  pressure: [Float!]!     # [lower and upper bounds]
+  iso: String             # ISO X
+  us_fed: String          # Class Xk
 }

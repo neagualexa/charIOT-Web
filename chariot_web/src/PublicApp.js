@@ -18,8 +18,9 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 // import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import './components/react-sidenav.css'
 
-import { TiHomeOutline, TiLightbulb } from "react-icons/ti";
+import { TiHomeOutline } from "react-icons/ti";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FiSettings } from "react-icons/fi";
 
 import { colours } from "./components/colours";
 
@@ -60,7 +61,7 @@ const SideBarMenu = () => {
         <SideNav.Nav defaultSelected="home">
           <MenuItem props={{ key: "home", title: "Home", icon: <TiHomeOutline style={{ fontSize: '1.9em' }} /> }} />
           <MenuItem props={{ key: "dashboard", title: "Dashboard", icon: <MdOutlineSpaceDashboard style={{ fontSize: '1.75em' }} /> }} />
-          <MenuItem props={{ key: "settings", title: "Settings", icon: <TiLightbulb style={{ fontSize: '1.9em' }} /> }} />
+          <MenuItem props={{ key: "settings", title: "Settings", icon: <FiSettings style={{ fontSize: '1.7em' }} /> }} />
         </SideNav.Nav>
       </SideNav>
     </React.Fragment>
@@ -80,7 +81,7 @@ const MenuItem = (props) => {
     <NavItem eventKey={key}
       onSelect={(selected) => {
         to = '/' + selected;
-        console.log(to)
+        // console.log(to)
         handleClick(to);
       }}
     >

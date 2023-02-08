@@ -53,7 +53,9 @@ export const createLiveData = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
       iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -69,7 +71,9 @@ export const updateLiveData = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
       iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -85,7 +89,9 @@ export const deleteLiveData = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
       iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -102,6 +108,9 @@ export const createReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -118,6 +127,9 @@ export const updateReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -134,6 +146,9 @@ export const deleteReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -150,6 +165,9 @@ export const createAverageHourReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -166,6 +184,9 @@ export const updateAverageHourReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -182,6 +203,9 @@ export const deleteAverageHourReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -198,6 +222,9 @@ export const createAverageDayReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -214,6 +241,9 @@ export const updateAverageDayReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -230,6 +260,9 @@ export const deleteAverageDayReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -245,6 +278,9 @@ export const createDeviceSetting = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -260,6 +296,9 @@ export const updateDeviceSetting = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -275,6 +314,9 @@ export const deleteDeviceSetting = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }

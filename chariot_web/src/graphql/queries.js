@@ -37,7 +37,9 @@ export const getLiveData = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
       iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -55,7 +57,9 @@ export const listLiveData = /* GraphQL */ `
         productID
         temperature
         humidity
+        pressure
         iso
+        us_fed
         createdAt
         updatedAt
       }
@@ -71,6 +75,9 @@ export const getReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -89,6 +96,9 @@ export const listReadings = /* GraphQL */ `
         time
         temperature
         humidity
+        pressure
+        iso
+        us_fed
         createdAt
         updatedAt
       }
@@ -104,6 +114,9 @@ export const getAverageHourReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -126,6 +139,9 @@ export const listAverageHourReadings = /* GraphQL */ `
         time
         temperature
         humidity
+        pressure
+        iso
+        us_fed
         createdAt
         updatedAt
       }
@@ -141,6 +157,9 @@ export const getAverageDayReading = /* GraphQL */ `
       time
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -163,6 +182,9 @@ export const listAverageDayReadings = /* GraphQL */ `
         time
         temperature
         humidity
+        pressure
+        iso
+        us_fed
         createdAt
         updatedAt
       }
@@ -177,6 +199,9 @@ export const getDeviceSetting = /* GraphQL */ `
       productID
       temperature
       humidity
+      pressure
+      iso
+      us_fed
       createdAt
       updatedAt
     }
@@ -194,6 +219,9 @@ export const listDeviceSettings = /* GraphQL */ `
         productID
         temperature
         humidity
+        pressure
+        iso
+        us_fed
         createdAt
         updatedAt
       }
