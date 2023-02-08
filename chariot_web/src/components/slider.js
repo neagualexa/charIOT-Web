@@ -2,11 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { colours } from "./colours";
-import { Button, Grid, useTheme } from "@aws-amplify/ui-react";
+import { Button, Grid, useTheme, View } from "@aws-amplify/ui-react";
 import { listDeviceSettings } from '../graphql/queries';
 import { updateDeviceSetting } from "../graphql/mutations";
 import { API } from 'aws-amplify';
 import { Heading } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
+import { Divider } from '@mui/material';
 
 function valuetextTemp(value) {
   return `${value}°C`;
@@ -22,6 +24,8 @@ export default function RangeSlider({product}) {
   const [valueHum, setValueHum] = React.useState([10, 27]);
 
   const { tokens } = useTheme();
+  const navigate = useNavigate();
+  const handleClick = (path) => navigate(path);
 
   React.useEffect(() => {
     fetchSettings();
@@ -87,8 +91,19 @@ export default function RangeSlider({product}) {
           // color={colours.dark_blue} // TODO: to change the color of the line
         />
       </Grid>
-      <Button onClick={() => updateSettings(setting)} backgroundColor={colours.dark_blue} color={colours.white}
-       variation='primary'>Update Settings</Button>
+      <View style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
+        <Button onClick={() => updateSettings(setting)} backgroundColor={colours.dark_blue} color={colours.white}
+        variation='primary'>Update Settings</Button>
+        <View style={{paddingLeft:'5%'}}>
+          <Button onClick={() => {
+                        let to = '/dashboard/' + product;
+                        console.log(to)
+                        handleClick(to);
+                      }}
+            backgroundColor={colours.dark_blue} color={colours.white} variation='primary'
+            > Check readings of {product} </Button>
+          </View>
+      </View>
     </Box>
   );
 }

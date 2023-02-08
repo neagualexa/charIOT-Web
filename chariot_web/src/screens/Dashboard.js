@@ -42,8 +42,6 @@ const defaultLive = [
   }
 ]
 
-
-
 function Dashboard() {
   const { tokens } = useTheme();
 
@@ -67,13 +65,13 @@ function Dashboard() {
   useEffect(() => {
     fetchReadings();
     fetchProducts();
-    fetchLiveData();
+    // fetchLiveData();
   }, []);
 
   useEffect(() => {
     fetchReadings();
     fetchProducts();
-    fetchLiveData();
+    // fetchLiveData();
   }, [path]);
 
   // FETCH DATABASE ENTRIES
@@ -112,8 +110,10 @@ function Dashboard() {
     })
     let sortFetchedData = fetchedData.sort(compare);
     setBarData(sortFetchedData);
+    getLiveData(sortFetchedData);
   }
 
+  // NOT NEEDED ANYMORE <- fetching directly from database
   async function fetchLiveData() {
     const apiData = await API.graphql({ query: listLiveData });
     const dataAPI = apiData.data.listLiveData.items;
@@ -127,33 +127,33 @@ function Dashboard() {
     setProducts(productAPI.sort(compareProduct)); // to get access to the raw temperatures data
   }
 
-  // function getLiveData(data) {
-  //   // GET CURRENT/LAST VALUES FOR DATA
+  function getLiveData(data) {
+    // GET CURRENT/LAST VALUES FOR DATA
 
-  //   var unique = [];
-  //   data.map((d,i) => {
-  //     if (unique.filter(e => e.productID === d.productID).length > 0) {
-  //       unique.filter(e => e.productID === d.productID).delete();
-  //       unique.push(d);
-  //     } else {
-  //       unique.push(d);
-  //     }
-  //   })
+    var unique = [];
+    data.map((d,i) => {
+      if (unique.filter(e => e.productID === d.productID).length > 0) {
+        unique.filter(e => e.productID === d.productID).delete();
+        unique.push(d);
+      } else {
+        unique.push(d);
+      }
+    })
     
-  //   console.log(unique)
+    console.log(unique)
 
-  //   var reversedData = data;
-  //   var unique = [];
-  //   var distinctData = [];
-  //   for( let i = reversedData.length-1; i >=0 ; i-- ){
-  //     if( !unique[reversedData[i].productID]){
-  //       distinctData.push(reversedData[i]);
-  //       unique[reversedData[i].productID] = 1;
-  //     }
-  //   }
-  //   // console.log(distinctData);
-  //   setCurrentDeviceReadings(distinctData);
-  // }
+    var reversedData = data;
+    var unique = [];
+    var distinctData = [];
+    for( let i = reversedData.length-1; i >=0 ; i-- ){
+      if( !unique[reversedData[i].productID]){
+        distinctData.push(reversedData[i]);
+        unique[reversedData[i].productID] = 1;
+      }
+    }
+    // console.log(distinctData);
+    setLiveData(distinctData);
+  }
 
   // COMPARISON FOR SORTING
   function compare(a, b) {
@@ -212,6 +212,19 @@ function Dashboard() {
   //   });
   // }
 
+  const viewLive = (productLive) => {
+    if (productLive != undefined){
+      return(
+      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
+          <Heading className="App-text" >Live readings</Heading>
+          <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
+          <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
+          <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
+      </View>
+      );
+    }
+  }
+
 
   return (
     <View style={{paddingLeft:'10%', alignItems:'center', minHeight:'100vh'}}>
@@ -241,6 +254,7 @@ function Dashboard() {
               if(p.product_name == path_product_name){
                 // 1) SEE DASHBOARD FOR ONLY ONE DEVICE
                 let productLive = liveData.length==0 ? defaultLive[0] : liveData.filter((r) => (r.productID[1] === p.product_name))[0]
+                console.log("product for one:", productLive)
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
                   <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from {p.product_name} </Heading>
@@ -249,12 +263,7 @@ function Dashboard() {
                       // templateRows="10rem 10rem"
                       gap={tokens.space.small}
                     >
-                      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
-                          <Heading className="App-text" >Live readings</Heading>
-                          <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
-                          <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
-                          <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
-                      </View>
+                      {viewLive(productLive)}
                       <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
                       <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>
@@ -266,6 +275,7 @@ function Dashboard() {
               // 2) SEE DASHBOARD WITH ALL DEVICES AND THEIR GRAPHS
               let productData = barData.filter((r) => (r.productID[1] === p.product_name))
               let productLive = liveData.filter((r) => (r.productID[1] === p.product_name))[0]
+              console.log("product for all devices:", productLive)
               return(
               <div key={i} style={{paddingTop:'5vh'}}>
                 <Heading className="App-text" style={{paddingBottom:'2vh'}}> Readings from all devices shown </Heading>
@@ -276,12 +286,7 @@ function Dashboard() {
                     gap={tokens.space.small}
                     
                   >
-                  <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
-                      <Heading className="App-text" >Live readings</Heading>
-                      <Heading className="App-text" level={2}>Current ISO: {productLive.iso}</Heading>
-                      <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
-                      <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
-                  </View>
+                  {viewLive(productLive)}
                   <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
                   <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
