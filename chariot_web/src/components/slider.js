@@ -61,44 +61,28 @@ export default function RangeSlider({product}) {
   const equivalenceStandard = (value, standard) => {
     if(standard = "iso"){
       switch(value){
-        case("ISO 1"):  return("< Class 1");
-                        break; 
-        case("ISO 2"):  return("< Class 1");
-                        break; 
-        case("ISO 3"):  return("Class 1");
-                        break; 
+        case("ISO 1"):  return("< Class 1"); 
+        case("ISO 2"):  return("< Class 1"); 
+        case("ISO 3"):  return("Class 1"); 
         case("ISO 4"):  return("Class 10");
-                        break; 
         case("ISO 5"):  return("Class 100");
-                        break;
-        case("ISO 6"):  return("Class 1,000");
-                        break; 
+        case("ISO 6"):  return("Class 1,000"); 
         case("ISO 7"):  return("Class 10,000");
-                        break; 
-        case("ISO 8"):  return("Class 100,000");
-                        break;         
+        case("ISO 8"):  return("Class 100,000");        
         case("ISO 9"):  return("Room air");
-                        break;       
+       
       } 
     } 
     if(standard = "us_fed"){
       switch(value){
         case("< Class 1"):      return("ISO 2");
-                        break;
-        case("Class 1"):        return("ISO 3");
-                        break; 
+        case("Class 1"):        return("ISO 3"); 
         case("Class 10"):       return("ISO 4");
-                        break; 
         case("Class 100"):      return("ISO 5");
-                        break;
-        case("Class 1,000"):    return("ISO 6");
-                        break; 
-        case("Class 10,000"):   return("ISO 7");
-                        break; 
-        case("Class 100,000"):  return("ISO 8");
-                        break;         
-        case("Room air"):       return("ISO 9");
-                        break;       
+        case("Class 1,000"):    return("ISO 6"); 
+        case("Class 10,000"):   return("ISO 7"); 
+        case("Class 100,000"):  return("ISO 8");     
+        case("Room air"):       return("ISO 9");       
       }
   }}
 

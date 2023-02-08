@@ -17,8 +17,11 @@ import {
 } from "@aws-amplify/ui-react";
 import '../App.css';
 import BarGraph from "../components/chart";
+import LineGraph from "../components/chart_line";
 import { useNavigate } from "react-router-dom";
 import { colours } from "../components/colours";
+import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 
 const defaultReadings = [
   { name:"Time1",
@@ -52,24 +55,31 @@ const defaultLive = [
 
 function Dashboard() {
   const { tokens } = useTheme();
+  let path = window.location.pathname
+  let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
 
   // always set the default value to some defaults to avoid undefined errors in html build
   const [readings, setReadings] = useState([]);
   const [barData, setBarData] = useState(defaultReadings);
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState('');
-  const [liveData, setLiveData] = useState(defaultLive); // TODO: still errors at some undefined behaviour TODO
-
-  let path = window.location.pathname
-  let path_product_name = (path == '/dashboard') ? '' : path.replace('/dashboard/','');
+  const [selectedProduct, setSelectedProduct] = useState(path_product_name);
+  const [liveData, setLiveData] = useState(defaultLive); 
+  const [switchState, setSwitchState] = useState(false)
+  
   const navigate = useNavigate();
   const handleClick = (path) => navigate(path);
+
   const handleChange = (event) => {
     setSelectedProduct(event.target.value);
     // console.log(event.target.value);
     let to = event.target.value=='' ? '/dashboard' : '/dashboard/' + event.target.value;
     handleClick(to);
   };
+
+  const handleChangeSwitch = (event) => {
+    setSwitchState(!switchState);
+  };
+
   useEffect(() => {
     fetchReadings();
     fetchProducts();
@@ -80,6 +90,7 @@ function Dashboard() {
     fetchReadings();
     fetchProducts();
     // fetchLiveData();
+    setSelectedProduct((path_product_name == '') ? 'All devices' : path_product_name);
   }, [path]);
 
   // FETCH DATABASE ENTRIES
@@ -229,6 +240,26 @@ function Dashboard() {
     }
   }
 
+  const changeGraphType = (p,productData) => {
+    if(switchState){
+      return(
+        <>
+        <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
+        <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
+        <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+        </>
+      );
+    }else{
+      return(
+        <>
+        <LineGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
+        <LineGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
+        <LineGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+        </>
+      );
+    }
+  }
+
 
   return (
     <View style={{paddingLeft:'10%', alignItems:'center', minHeight:'100vh'}}>
@@ -250,6 +281,13 @@ function Dashboard() {
             );
           })}
         </SelectField>
+
+        <Typography paddingTop='3%'>Choose charts type</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="center">
+          <Typography>Line</Typography>
+          <Switch checked={switchState} onChange={handleChangeSwitch} color="default" />
+          <Typography>Bar</Typography>
+        </Stack>
       </View>
 
       <View className="Dashboard" style={{paddingTop:'5vh'}}>
@@ -268,9 +306,7 @@ function Dashboard() {
                       gap={tokens.space.small}
                     >
                       {viewLive(productLive)}
-                      <BarGraph graphData={barData} product={p.product_name} type={"Hour"} className="App"/>
-                      <BarGraph graphData={barData} product={p.product_name} type={"Hourly Average"} className="App"/>
-                      <BarGraph graphData={barData} product={p.product_name} type={"Day Average"} className="App"/>
+                      {changeGraphType(p,barData)}
                   </Grid>
                 </div>
                 );
@@ -288,12 +324,9 @@ function Dashboard() {
                     templateColumns="1fr 1fr"
                     // templateRows="10rem 10rem"
                     gap={tokens.space.small}
-                    
                   >
                   {viewLive(productLive)}
-                  <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
-                  <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
-                  <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+                  {changeGraphType(p,productData)}
                 </Grid>
               </div>
               );

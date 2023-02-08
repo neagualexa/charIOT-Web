@@ -2,8 +2,8 @@
 import { Heading, View } from "@aws-amplify/ui-react";
 import React, { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -23,7 +23,7 @@ function getWindowDimensions() {
 }
 
 
-export default function BarGraph({graphData, product, type}) {
+export default function LineGraph({graphData, product, type}) {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function BarGraph({graphData, product, type}) {
     <View>
       <Heading className="App-text">Device {product}</Heading>
       <Heading className="App-text">- {type} -</Heading>
-      <BarChart
+      <LineChart 
         width={graph_width}
         height={graph_height}
         data={graphData}
@@ -58,9 +58,9 @@ export default function BarGraph({graphData, product, type}) {
         <YAxis stroke={colours.dark_grey}/>
         <Tooltip stroke={colours.dark_grey}/>
         <Legend />
-        <Bar dataKey="temperature" fill={colours.dark_blue} />
-        <Bar dataKey="humidity" fill={colours.light_brown} />
-      </BarChart>
+        <Line dataKey="temperature" fill={colours.dark_blue} strokeWidth={2} stroke={colours.dark_blue}/>
+        <Line dataKey="humidity" fill={colours.light_brown} strokeWidth={2} stroke={colours.light_brown}/>
+      </LineChart>
       </View>
   );
 }
