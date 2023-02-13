@@ -237,6 +237,13 @@ function Dashboard() {
           <Heading className="App-text" level={2}>Current Pressure: {productLive.pressure}</Heading>
       </View>
       );
+    } else {
+      return(
+      <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', paddingLeft:'15%'}}>
+          <Heading className="App-text" >No Data for this device.</Heading>
+          <Heading className="App-text" level={2}>Once the device will start reading, data will be shown.</Heading>
+      </View>
+      );
     }
   }
 

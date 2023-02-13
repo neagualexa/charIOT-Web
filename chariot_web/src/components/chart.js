@@ -8,7 +8,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  Brush
 } from "recharts";
 
 import { colours } from "./colours";
@@ -58,8 +59,10 @@ export default function BarGraph({graphData, product, type}) {
         <YAxis stroke={colours.dark_grey}/>
         <Tooltip stroke={colours.dark_grey}/>
         <Legend />
+        <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colours.dark_grey}/>
         <Bar dataKey="temperature" fill={colours.dark_blue} />
         <Bar dataKey="humidity" fill={colours.light_brown} />
+        <Bar dataKey="pressure" fill={colours.red} />
       </BarChart>
       </View>
   );

@@ -8,7 +8,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  Brush
 } from "recharts";
 
 import { colours } from "./colours";
@@ -42,25 +43,27 @@ export default function LineGraph({graphData, product, type}) {
     <View>
       <Heading className="App-text">Device {product}</Heading>
       <Heading className="App-text">- {type} -</Heading>
-      <LineChart 
-        width={graph_width}
-        height={graph_height}
-        data={graphData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" stroke={colours.dark_grey}/>
-        <YAxis stroke={colours.dark_grey}/>
-        <Tooltip stroke={colours.dark_grey}/>
-        <Legend />
-        <Line dataKey="temperature" fill={colours.dark_blue} strokeWidth={2} stroke={colours.dark_blue}/>
-        <Line dataKey="humidity" fill={colours.light_brown} strokeWidth={2} stroke={colours.light_brown}/>
-      </LineChart>
+        <LineChart 
+          width={graph_width}
+          height={graph_height}
+          data={graphData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" stroke={colours.dark_grey}/>
+          <YAxis stroke={colours.dark_grey}/>
+          <Tooltip stroke={colours.dark_grey}/>
+          <Legend />
+          <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colours.dark_grey}/>
+          <Line dataKey="temperature" fill={colours.dark_blue} strokeWidth={2} stroke={colours.dark_blue}/>
+          <Line dataKey="humidity" fill={colours.light_brown} strokeWidth={2} stroke={colours.light_brown}/>
+          <Line dataKey="pressure" fill={colours.red} strokeWidth={2} stroke={colours.red}/>
+        </LineChart>
       </View>
   );
 }
