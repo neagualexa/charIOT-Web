@@ -30,7 +30,7 @@ const marksTemp = [ { value: 0, label: '0°C', }, { value: 100, label: '100°C',
 const marksHum = [ { value: 0, label: '0%', }, { value: 100, label: '100%', }]
 const marksPress = [ { value: 0, label: '0kPa', }, { value: 200, label: '200kPa', }]
 
-const isoStandards = ["ISO 1", "ISO 2", "ISO 3", "ISO 4", "ISO 5", "ISO 6", "ISO 7", "ISO 8", "ISO 9"];
+const isoStandards = ["ISO1", "ISO2", "ISO3", "ISO4", "ISO5", "ISO6", "ISO7", "ISO8", "ISO9"];
 const usfedStandards = ["< Class 1", "Class 1", "Class 10", "Class 100", "Class 1,000", "Class 10,000", "Class 100,000", "Room air"];
 
 export default function RangeSlider({product}) {
@@ -61,28 +61,28 @@ export default function RangeSlider({product}) {
   const equivalenceStandard = (value, standard) => {
     if(standard = "iso"){
       switch(value){
-        case("ISO 1"):  return("< Class 1"); 
-        case("ISO 2"):  return("< Class 1"); 
-        case("ISO 3"):  return("Class 1"); 
-        case("ISO 4"):  return("Class 10");
-        case("ISO 5"):  return("Class 100");
-        case("ISO 6"):  return("Class 1,000"); 
-        case("ISO 7"):  return("Class 10,000");
-        case("ISO 8"):  return("Class 100,000");        
-        case("ISO 9"):  return("Room air");
+        case("ISO1"):  return("< Class 1"); 
+        case("ISO2"):  return("< Class 1"); 
+        case("ISO3"):  return("Class 1"); 
+        case("ISO4"):  return("Class 10");
+        case("ISO5"):  return("Class 100");
+        case("ISO6"):  return("Class 1,000"); 
+        case("ISO7"):  return("Class 10,000");
+        case("ISO8"):  return("Class 100,000");        
+        case("ISO9"):  return("Room air");
        
       } 
     } 
     if(standard = "us_fed"){
       switch(value){
-        case("< Class 1"):      return("ISO 2");
-        case("Class 1"):        return("ISO 3"); 
-        case("Class 10"):       return("ISO 4");
-        case("Class 100"):      return("ISO 5");
-        case("Class 1,000"):    return("ISO 6"); 
-        case("Class 10,000"):   return("ISO 7"); 
-        case("Class 100,000"):  return("ISO 8");     
-        case("Room air"):       return("ISO 9");       
+        case("< Class 1"):      return("ISO2");
+        case("Class 1"):        return("ISO3"); 
+        case("Class 10"):       return("ISO4");
+        case("Class 100"):      return("ISO5");
+        case("Class 1,000"):    return("ISO6"); 
+        case("Class 10,000"):   return("ISO7"); 
+        case("Class 100,000"):  return("ISO8");     
+        case("Room air"):       return("ISO9");       
       }
   }}
 

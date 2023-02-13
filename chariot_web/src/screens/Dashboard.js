@@ -1,7 +1,7 @@
 import "@aws-amplify/ui-react/styles.css";
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
-import { listReadings, listProducts, listLiveData } from "../graphql/queries";
+import { listReadings, listProducts, listLiveData,listDeviceSettings  } from "../graphql/queries";
 import { createReading } from "../graphql/mutations";
 
 import {
@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { colours } from "../components/colours";
 import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
+import {AiFillCheckCircle, AiFillAlert} from "react-icons/ai";
 
 const defaultReadings = [
   { name:"Time1",
@@ -66,7 +67,8 @@ function Dashboard() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(path_product_name);
   const [liveData, setLiveData] = useState(defaultLive); 
-  const [switchState, setSwitchState] = useState(false)
+  const [switchState, setSwitchState] = useState(false);
+  const [settings, setSettings] = useState([]);
   
   const navigate = useNavigate();
   const handleClick = (path) => navigate(path);
@@ -85,12 +87,14 @@ function Dashboard() {
   useEffect(() => {
     fetchReadings();
     fetchProducts();
+    fetchSettings();
     // fetchLiveData();
   }, []);
 
   useEffect(() => {
     fetchReadings();
     fetchProducts();
+    fetchSettings();
     // fetchLiveData();
     setSelectedProduct((path_product_name == '') ? 'All devices' : path_product_name);
   }, [path]);
@@ -142,17 +146,23 @@ function Dashboard() {
   }
 
   // NOT NEEDED ANYMORE <- fetching directly from database
-  async function fetchLiveData() {
-    const apiData = await API.graphql({ query: listLiveData });
-    const dataAPI = apiData.data.listLiveData.items;
-    setLiveData(dataAPI); // to get access to the raw temperatures data
-    // console.log(dataAPI)
-  }
+  // async function fetchLiveData() {
+  //   const apiData = await API.graphql({ query: listLiveData });
+  //   const dataAPI = apiData.data.listLiveData.items;
+  //   setLiveData(dataAPI); // to get access to the raw temperatures data
+  //   // console.log(dataAPI)
+  // }
 
   async function fetchProducts() {
     const apiData = await API.graphql({ query: listProducts });
     const productAPI = apiData.data.listProducts.items;
     setProducts(productAPI.sort(compareProduct)); // to get access to the raw temperatures data
+  }
+
+  async function fetchSettings() {
+    const apiData = await API.graphql({ query: listDeviceSettings });
+    const settingsAPI = apiData.data.listDeviceSettings.items;
+    setSettings(settingsAPI);
   }
 
   function getLiveData(data) {
@@ -228,15 +238,70 @@ function Dashboard() {
   // }
 
   const viewLive = (productLive) => {
-    if (productLive != undefined){
+
+    let status = {
+      iso: "good",
+      us_fed: "good",
+      temperature: "good",
+      humidity: "good",
+      pressure: "good"
+    }
+
+    let styleGood = {color:"green"}
+    let styleBad = {color:"red"}
+    let styleWarning = {fontSize:12, color:"red"}
+
+    let setting = {}
+    if (productLive != undefined && settings != undefined) {
+      setting = settings.filter(s => s.productID[1] == productLive.productID[1])[0];
+    }
+    // console.log(setting)
+
+    settings.map((expected) => {
+      if (productLive != undefined && expected != undefined){
+        if(productLive.productID != undefined && expected.productID != undefined){
+          // console.log(expected.productID, expected[type], productLive.productID, productLive[type])
+          if(expected.productID[1] == productLive.productID[1]){
+            // console.log("found same device")
+            status.iso = (expected.iso === productLive.iso) ? "good" : "bad";
+            status.us_fed = (expected.us_fed === productLive.us_fed) ? "good" : "bad";
+            status.temperature = (expected.temperature[0] <= productLive.temperature &&
+                                  productLive.temperature <= expected.temperature[1]) ? "good" : "bad";
+            status.humidity = (expected.humidity[0] <= productLive.humidity &&
+                                productLive.humidity <= expected.humidity[1]) ? "good" : "bad";
+            status.pressure = (expected.pressure[0] <= productLive.pressure &&
+                                productLive.pressure <= expected.pressure[1]) ? "good" : "bad";
+          }
+        }
+      }
+    })
+
+    
+    if (productLive != undefined && setting != undefined){
       return(
       <View style={{display:'flex', flexDirection:'column', minHeight:'100%', justifyContent:'center', alignItems:'flex-start', paddingLeft:'15%'}}>
           <Heading className="App-text" >Live readings</Heading>
-          <Heading className="App-text" level={2}>ISO14644-1: {productLive.iso}</Heading>
-          <Heading className="App-text" level={2}>US FED STD 209E: {productLive.us_fed}</Heading>
-          <Heading className="App-text" level={2}>Current Temperature: {productLive.temperature}</Heading>
-          <Heading className="App-text" level={2}>Current Humidity: {productLive.humidity}</Heading>
-          <Heading className="App-text" level={2}>Current Pressure: {productLive.pressure}</Heading>
+
+          <Heading className="App-text" level={2}>
+          {(status.iso=="good") ? (<AiFillCheckCircle style={styleGood}/>) 
+                                : (<AiFillAlert style={styleBad}/>)} ISO14644-1: <b>{productLive.iso} 
+                                {(status.iso == "bad") ? (<b style={styleWarning}>( Expected {setting.iso} )</b>) : (<></>)} </b></Heading>
+          <Heading className="App-text" level={2}>
+          {(status.us_fed=="good") ? (<AiFillCheckCircle style={styleGood}/>) 
+                                    : (<AiFillAlert style={styleBad}/>)} US FED STD 209E: <b>{productLive.us_fed} 
+                                    {(status.us_fed == "bad") ? (<b style={styleWarning}>( Expected {setting.us_fed} )</b>) : (<></>)}</b></Heading>
+          <Heading className="App-text" level={2}>
+          {(status.temperature=="good") ? (<AiFillCheckCircle style={styleGood}/>) 
+                                        : (<AiFillAlert style={styleBad}/>)} Temperature: <b>{productLive.temperature} 
+                                        {(status.temperature == "bad") ? (<b style={styleWarning}>( Expected between [{setting.temperature[0]},{setting.temperature[1]}] )</b>) : (<></>)}</b></Heading>
+          <Heading className="App-text" level={2}>
+          {(status.humidity=="good") ? (<AiFillCheckCircle style={styleGood}/>) 
+                                      : (<AiFillAlert style={styleBad}/>)} Humidity: <b>{productLive.humidity} 
+                                      {(status.humidity == "bad") ? (<b style={styleWarning}>( Expected between [{setting.humidity[0]},{setting.humidity[1]}] )</b>) : (<></>)}</b></Heading>
+          <Heading className="App-text" level={2}>
+          {(status.pressure=="good") ? (<AiFillCheckCircle style={styleGood}/>) 
+                                      : (<AiFillAlert style={styleBad}/>)} Pressure: <b>{productLive.pressure} 
+                                      {(status.pressure == "bad") ? (<b style={styleWarning}>( Expected between [{setting.pressure[0]},{setting.pressure[1]}] )</b>) : (<></>)}</b></Heading>
       </View>
       );
     } else {
@@ -308,7 +373,7 @@ function Dashboard() {
             if (path_product_name != ''){
               if(p.product_name == path_product_name){
                 // 1) SEE DASHBOARD FOR ONLY ONE DEVICE
-                let productLive = liveData.length==0 ? defaultLive[0] : liveData.filter((r) => (r.productID[1] === p.product_name))[0]
+                let productLive = liveData.filter((r) => (r.productID[1] === p.product_name))[0]
                 // console.log("product for one:", productLive)
                 return(
                 <div key={i} style={{paddingTop:'5vh'}}>
