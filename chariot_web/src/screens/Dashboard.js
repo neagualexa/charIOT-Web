@@ -18,6 +18,8 @@ import {
 import '../App.css';
 import BarGraph from "../components/chart";
 import LineGraph from "../components/chart_line";
+import SpecificBarGraph from "../components/specific_bar_chart";
+import SpecificLineGraph from "../components/specific_line_chart";
 import { useNavigate } from "react-router-dom";
 import { colours } from "../components/colours";
 import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
@@ -251,17 +253,21 @@ function Dashboard() {
     if(switchState){
       return(
         <>
-        <BarGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
-        <BarGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
-        <BarGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+        {/* <BarGraph graphData={productData} product={p.product_name} type={"All"} className="App"/> */}
+        <SpecificBarGraph graphData={productData} product={p.product_name} type={"Temperature"} className="App" dataKey={"temperature"}/>
+        <SpecificBarGraph graphData={productData} product={p.product_name} type={"Humidity"} className="App" dataKey={"humidity"}/>
+        <SpecificBarGraph graphData={productData} product={p.product_name} type={"Pressure"} className="App" dataKey={"pressure"}/>
         </>
       );
     }else{
       return(
         <>
-        <LineGraph graphData={productData} product={p.product_name} type={"Hour"} className="App"/>
-        <LineGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/>
-        <LineGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/>
+        {/* <LineGraph graphData={productData} product={p.product_name} type={"All"} className="App"/> */}
+        {/* <LineGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/> */}
+        {/* <LineGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/> */}
+        <SpecificLineGraph graphData={productData} product={p.product_name} type={"Temperature"} className="App" dataKey={"temperature"}/>
+        <SpecificLineGraph graphData={productData} product={p.product_name} type={"Humidity"} className="App" dataKey={"humidity"}/>
+        <SpecificLineGraph graphData={productData} product={p.product_name} type={"Pressure"} className="App" dataKey={"pressure"}/>
         </>
       );
     }

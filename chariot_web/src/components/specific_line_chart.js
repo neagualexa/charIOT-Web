@@ -24,7 +24,7 @@ function getWindowDimensions() {
 }
 
 
-export default function LineGraph({graphData, product, type}) {
+export default function SpecificLineGraph({graphData, product, type, dataKey}) {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
@@ -38,6 +38,18 @@ export default function LineGraph({graphData, product, type}) {
 
   let graph_height = windowDimensions.height*0.5;   //300
   let graph_width = windowDimensions.width*0.4;     //500
+
+  const colourGraph = (dataKey) => {
+    if (dataKey == "temperature"){
+      return colours.dark_grey
+    } else if (dataKey == "humidity"){
+      return colours.light_brown
+    } else if (dataKey == "pressure"){
+      return colours.red
+    } else {
+      return colours.dark_grey
+    }
+  }
 
   return (
     <View>
@@ -56,13 +68,11 @@ export default function LineGraph({graphData, product, type}) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke={colours.dark_grey}/>
-          <YAxis stroke={colours.dark_grey} domain={[dataMin => (Math.round(dataMin)-2), dataMax => (Math.round(dataMax)+2)]}/>
+          <YAxis stroke={colours.dark_grey} domain={[dataMin => (Math.round(dataMin)-0.5), dataMax => (Math.round(dataMax)+0.5)]}/>
           <Tooltip stroke={colours.dark_grey}/>
           <Legend />
-          <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colours.dark_grey}/>
-          <Line dataKey="temperature" fill={colours.dark_blue} strokeWidth={2} stroke={colours.dark_blue} fillOpacity={0} dot={false}/>
-          <Line dataKey="humidity" fill={colours.light_brown} strokeWidth={2} stroke={colours.light_brown} fillOpacity={0} dot={false}/>
-          <Line dataKey="pressure" fill={colours.red} strokeWidth={2} stroke={colours.red} fillOpacity={0} dot={false}/>
+          <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colourGraph(dataKey)}/>
+          <Line dataKey={dataKey} fill={colourGraph(dataKey)} stroke={colourGraph(dataKey)} strokeWidth={2} fillOpacity={0} dot={false}/>
         </LineChart>
       </View>
   );
