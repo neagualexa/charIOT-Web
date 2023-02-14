@@ -120,7 +120,7 @@ function Dashboard() {
               humidity: r.humidity,
               pressure: r.pressure,
               iso: r.iso,
-              us_fed: r.us_fed
+              us_fed: equivalenceStandard(r.iso)
             }
           );
         }
@@ -134,7 +134,7 @@ function Dashboard() {
             humidity: r.humidity,
             pressure: r.pressure,
             iso: r.iso,
-            us_fed: r.us_fed
+            us_fed: equivalenceStandard(r.iso)
           }
         );
       }
@@ -144,6 +144,22 @@ function Dashboard() {
     setBarData(sortFetchedData);
     getLiveData(sortFetchedData);
   }
+
+  const equivalenceStandard = (value, standard) => {
+      switch(value){
+        case("ISO1"):   return("< Class 1"); 
+        case("ISO2"):   return("< Class 1"); 
+        case("ISO3"):   return("Class 1"); 
+        case("ISO4"):   return("Class 10");
+        case("ISO5"):   return("Class 100");
+        case("ISO6"):   return("Class 1,000"); 
+        case("ISO7"):   return("Class 10,000");
+        case("ISO8"):   return("Class 100,000");        
+        case("ISO9"):   return("Room air");
+        case("ISO10"):  return("Room air");
+        case("ISO11"):  return("Room air");
+        case("ISO12"):  return("Room air");
+  }}
 
   // NOT NEEDED ANYMORE <- fetching directly from database
   // async function fetchLiveData() {
@@ -263,8 +279,8 @@ function Dashboard() {
           // console.log(expected.productID, expected[type], productLive.productID, productLive[type])
           if(expected.productID[1] == productLive.productID[1]){
             // console.log("found same device")
-            status.iso = (expected.iso === productLive.iso) ? "good" : "bad";
-            status.us_fed = (expected.us_fed === productLive.us_fed) ? "good" : "bad";
+            status.iso = (parseInt(expected.iso.slice(3)) >= parseInt(productLive.iso.slice(3))) ? "good" : "bad";
+            status.us_fed = status.iso;
             status.temperature = (expected.temperature[0] <= productLive.temperature &&
                                   productLive.temperature <= expected.temperature[1]) ? "good" : "bad";
             status.humidity = (expected.humidity[0] <= productLive.humidity &&
