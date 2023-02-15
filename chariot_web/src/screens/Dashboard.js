@@ -425,7 +425,7 @@ function Dashboard() {
           })}
       </View>
 
-      <View as="form" margin="3rem 0" onSubmit={createReadingData}>
+      {/* <View as="form" margin="3rem 0" onSubmit={createReadingData}>
         <Flex direction="row" justifyContent="center" backgroundColor={'white'}>
           <TextField
             name="time"
@@ -471,7 +471,7 @@ function Dashboard() {
             Create Data
           </Button>
         </Flex>
-      </View>
+      </View> */}
 
     </View>
   );
