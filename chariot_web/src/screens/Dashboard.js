@@ -94,7 +94,7 @@ function Dashboard() {
     fetchReadings();
     fetchProducts();
     fetchSettings();
-  });
+  }, [barData, readings, products, settings]);
 
   useEffect(() => {
     fetchReadings();
@@ -340,8 +340,6 @@ function Dashboard() {
       return(
         <>
         {/* <LineGraph graphData={productData} product={p.product_name} type={"All"} className="App"/> */}
-        {/* <LineGraph graphData={productData} product={p.product_name} type={"Hourly Average"} className="App"/> */}
-        {/* <LineGraph graphData={productData} product={p.product_name} type={"Day Average"} className="App"/> */}
         <SpecificLineGraph graphData={productData} product={p.product_name} type={"Temperature"} className="App" dataKey={"temperature"}/>
         <SpecificLineGraph graphData={productData} product={p.product_name} type={"Humidity"} className="App" dataKey={"humidity"}/>
         <SpecificLineGraph graphData={productData} product={p.product_name} type={"Pressure"} className="App" dataKey={"pressure"}/>

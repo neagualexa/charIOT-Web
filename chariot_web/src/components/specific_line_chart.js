@@ -71,7 +71,7 @@ export default function SpecificLineGraph({graphData, product, type, dataKey}) {
           <YAxis stroke={colours.dark_grey} domain={[dataMin => (Math.round(dataMin)-0.5), dataMax => (Math.round(dataMax)+0.5)]}/>
           <Tooltip stroke={colours.dark_grey}/>
           <Legend />
-          <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colourGraph(dataKey)}/>
+          {/* <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colourGraph(dataKey)}/> */}
           <Line dataKey={dataKey} fill={colourGraph(dataKey)} stroke={colourGraph(dataKey)} strokeWidth={2} fillOpacity={0} dot={false}/>
         </LineChart>
       </View>

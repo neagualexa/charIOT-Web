@@ -71,7 +71,7 @@ export default function SpecificBarGraph({graphData, product, type, dataKey}) {
         <YAxis stroke={colours.dark_grey} domain={[dataMin => (Math.round(dataMin)-1), dataMax => (Math.round(dataMax)+1)]}/>
         <Tooltip stroke={colours.dark_grey}/>
         <Legend />
-        <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colourGraph(dataKey)}/>
+        {/* <Brush dataKey="name" height={30} width={graph_width/1.3} stroke={colourGraph(dataKey)} data={graphData}/> */}
         <Bar dataKey={dataKey} fill={colourGraph(dataKey)}/>
       </BarChart>
       </View>
