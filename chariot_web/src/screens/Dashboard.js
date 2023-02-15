@@ -88,14 +88,18 @@ function Dashboard() {
     fetchReadings();
     fetchProducts();
     fetchSettings();
-    // fetchLiveData();
   }, []);
 
   useEffect(() => {
     fetchReadings();
     fetchProducts();
     fetchSettings();
-    // fetchLiveData();
+  });
+
+  useEffect(() => {
+    fetchReadings();
+    fetchProducts();
+    fetchSettings();
     setSelectedProduct((path_product_name == '') ? 'All devices' : path_product_name);
   }, [path]);
 
@@ -160,14 +164,6 @@ function Dashboard() {
         case("ISO11"):  return("Room air");
         case("ISO12"):  return("Room air");
   }}
-
-  // NOT NEEDED ANYMORE <- fetching directly from database
-  // async function fetchLiveData() {
-  //   const apiData = await API.graphql({ query: listLiveData });
-  //   const dataAPI = apiData.data.listLiveData.items;
-  //   setLiveData(dataAPI); // to get access to the raw temperatures data
-  //   // console.log(dataAPI)
-  // }
 
   async function fetchProducts() {
     const apiData = await API.graphql({ query: listProducts });
@@ -429,7 +425,7 @@ function Dashboard() {
           })}
       </View>
 
-      {/* <View as="form" margin="3rem 0" onSubmit={createReadingData}>
+      <View as="form" margin="3rem 0" onSubmit={createReadingData}>
         <Flex direction="row" justifyContent="center" backgroundColor={'white'}>
           <TextField
             name="time"
@@ -475,7 +471,7 @@ function Dashboard() {
             Create Data
           </Button>
         </Flex>
-      </View> */}
+      </View>
 
     </View>
   );
