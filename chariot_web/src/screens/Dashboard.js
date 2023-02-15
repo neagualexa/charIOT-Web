@@ -1,7 +1,7 @@
 import "@aws-amplify/ui-react/styles.css";
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
-import { listReadings, listProducts, listLiveData,listDeviceSettings  } from "../graphql/queries";
+import { listReadings, listProducts,listDeviceSettings  } from "../graphql/queries";
 import { createReading } from "../graphql/mutations";
 
 import {
