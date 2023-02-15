@@ -7,6 +7,7 @@ export const getProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
+      IP
       createdAt
       updatedAt
     }
@@ -23,43 +24,7 @@ export const listProducts = /* GraphQL */ `
         id
         MAC_address
         product_name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getLiveData = /* GraphQL */ `
-  query GetLiveData($id: ID!) {
-    getLiveData(id: $id) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listLiveData = /* GraphQL */ `
-  query ListLiveData(
-    $filter: ModelLiveDataFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLiveData(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        productID
-        temperature
-        humidity
-        pressure
-        iso
-        us_fed
+        IP
         createdAt
         updatedAt
       }

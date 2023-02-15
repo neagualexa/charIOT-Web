@@ -7,6 +7,7 @@ export const onCreateProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
+      IP
       createdAt
       updatedAt
     }
@@ -18,6 +19,7 @@ export const onUpdateProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
+      IP
       createdAt
       updatedAt
     }
@@ -29,51 +31,7 @@ export const onDeleteProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateLiveData = /* GraphQL */ `
-  subscription OnCreateLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
-    onCreateLiveData(filter: $filter) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLiveData = /* GraphQL */ `
-  subscription OnUpdateLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
-    onUpdateLiveData(filter: $filter) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLiveData = /* GraphQL */ `
-  subscription OnDeleteLiveData($filter: ModelSubscriptionLiveDataFilterInput) {
-    onDeleteLiveData(filter: $filter) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
+      IP
       createdAt
       updatedAt
     }

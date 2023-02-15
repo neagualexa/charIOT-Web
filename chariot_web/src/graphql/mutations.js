@@ -10,6 +10,7 @@ export const createProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
+      IP
       createdAt
       updatedAt
     }
@@ -24,6 +25,7 @@ export const updateProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
+      IP
       createdAt
       updatedAt
     }
@@ -38,60 +40,7 @@ export const deleteProduct = /* GraphQL */ `
       id
       MAC_address
       product_name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createLiveData = /* GraphQL */ `
-  mutation CreateLiveData(
-    $input: CreateLiveDataInput!
-    $condition: ModelLiveDataConditionInput
-  ) {
-    createLiveData(input: $input, condition: $condition) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLiveData = /* GraphQL */ `
-  mutation UpdateLiveData(
-    $input: UpdateLiveDataInput!
-    $condition: ModelLiveDataConditionInput
-  ) {
-    updateLiveData(input: $input, condition: $condition) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLiveData = /* GraphQL */ `
-  mutation DeleteLiveData(
-    $input: DeleteLiveDataInput!
-    $condition: ModelLiveDataConditionInput
-  ) {
-    deleteLiveData(input: $input, condition: $condition) {
-      id
-      productID
-      temperature
-      humidity
-      pressure
-      iso
-      us_fed
+      IP
       createdAt
       updatedAt
     }

@@ -6,17 +6,18 @@ type Product @model @auth(rules: [ { allow: public } ] ){
   id: ID!
   MAC_address: String!
   product_name: String!
+  IP: String
 }
 
-type LiveData @model @auth(rules: [ { allow: public } ] ){
-  id: ID!
-  productID: [String!]!   # [MAC_address of product, Name product]
-  temperature: Float
-  humidity: Float
-  pressure: Float
-  iso: String
-  us_fed: String
-}
+# type LiveData @model @auth(rules: [ { allow: public } ] ){
+#   id: ID!
+#   productID: [String!]!   # [MAC_address of product, Name product]
+#   temperature: Float
+#   humidity: Float
+#   pressure: Float
+#   iso: String
+#   us_fed: String
+# }
 
 type Reading @model @auth(rules: [ { allow: public } ] ){
   id: ID!
