@@ -19,6 +19,8 @@ This repo contains the web platform where the users can monitor the readings fro
 
 The webite is run publicly though AWS Amplify, which sets up a CI/CD pipeline that updates and builds the website whenever this git repository is updated. The Webapp uses Amplify's backend services, such as the authorisation API and the GraphQL API to create data accounts for specific users and let them live access the measurements stored in the DynamoDB database.
 
+If you want to build the website locally, you can follow the steps in the README file in the subfolder.
+
 ## The Architecture Datagram
 
 ![diagram-Copy of Page-1](https://user-images.githubusercontent.com/33195033/219667289-e2e850ad-40c4-400b-9083-eeff82336af6.png)
