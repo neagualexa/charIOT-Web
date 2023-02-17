@@ -16,6 +16,7 @@ This is a project to the course ELEC60013 Embedded System Project at Imperial Co
 ## Marketing website and access
 
 If you want to check out our project, here is the link to our marketing website that presents our project's goal and features. On the page you can also find a pitch video that quickly gives you an idea of our project. If you press the Log In button, you will be able to access the public dashboard webpage that is built with this repository.
+
 Marketing page: `` https://an72099.wixsite.com/chariot ``
 
 ## This Repo
