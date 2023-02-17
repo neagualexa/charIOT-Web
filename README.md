@@ -6,7 +6,7 @@
 CharIOT is an embedded system containing IoT devices based on Raspberry Pi. The goal of CharIOT is to motinor the quality and reliability of a research space, such as a cleanroom for microchip design. 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/33195033/219664868-e8c6e34d-451f-4ce4-bfb4-a503b5631ca5.png" width=70% height=70%>
+<img src="https://user-images.githubusercontent.com/33195033/219664868-e8c6e34d-451f-4ce4-bfb4-a503b5631ca5.png" width=100% height=100%>
 </p>
 
 Each IoT device under the CharIOT enviroment can measure the following characteristics of the clean room:
