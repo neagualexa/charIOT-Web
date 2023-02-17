@@ -13,6 +13,11 @@ Each IoT device under the CharIOT enviroment can measure the following character
 
 This is a project to the course ELEC60013 Embedded System Project at Imperial College London.
 
+## Marketing website and access
+
+If you want to check out our project, here is the link to our marketing website that presents our project's goal and features. On the page you can also find a pitch video that quickly gives you an idea of our project. If you press the Log In button, you will be able to access the public dashboard webpage that is built with this repository.
+Marketing page: `` https://an72099.wixsite.com/chariot ``
+
 ## This Repo
 
 This repo contains the web platform where the users can monitor the readings from the devices through multiple dashboards and live warning animations. The user can set specific expected settings for each specific device, considering that they could be positioned in set locations in the cleanroom and require specific accepted measurement ranges.
@@ -30,7 +35,6 @@ If you want to build the website locally, you can follow the steps in the README
 ![Home_01](https://user-images.githubusercontent.com/33195033/219667422-597b680c-0584-4b53-97af-4ff03162d08d.png)
 ![chariotpic1](https://user-images.githubusercontent.com/33195033/219667736-3fd2440f-5d6e-40da-94d5-09c1589703b6.png)
 ![chariotpic2](https://user-images.githubusercontent.com/33195033/219667746-be9eea0d-781e-4288-97b1-aabf77f983c6.png)
-
 
 
 ## The Hub repo 
